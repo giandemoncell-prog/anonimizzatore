@@ -1,0 +1,59 @@
+# Codice sorgente — non pubblicato nel repo pubblico
+*.py
+*.spec
+build.ps1
+
+# Build artifacts
+dist/
+build/
+dist_installer/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Ambienti virtuali
+venv/
+env/
+.venv/
+
+# Profili e configurazione locale (sensibili)
+# I profili default sono nel README — non committare config personalizzate
+# settings.yaml  ← decommentare se si vuole escludere
+
+# Tool files
+*.ico
+anon_icon.png
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs e output test
+*.log
+*_anonimizzato.*
+*_mapping.json
+*_deanonymized.*
+
+# Installer temporanei
+installer/
+
+# Materiali interni (non per repo pubblico)
+landing_page_copy.md
+
+# Tool e sessioni locali
+.claude/
+.omc/
+
+# Web UI temp files
+outputs/
+uploads/
+.venv_web/

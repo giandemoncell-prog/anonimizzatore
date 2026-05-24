@@ -1,0 +1,163 @@
+name: "Universal Anonymizer (any language)"
+language: "auto"
+description: "Anonymizes any document type in any language: names, addresses, contacts, financial data, IDs, tax codes, license plates, and all PII. Best for unknown or mixed-language documents."
+document_type: "document"
+output_format: "preserve"
+
+entity_types:
+  - id: "person_name"
+    placeholder: "[PERSON]"
+    description: "Full name or partial name of any natural person (first name, last name, nickname)"
+  - id: "organization"
+    placeholder: "[ORGANIZATION]"
+    description: "Company, institution, government body, school, hospital, NGO, brand name"
+  - id: "address"
+    placeholder: "[ADDRESS]"
+    description: "Full street address (street name + number + city + ZIP + country)"
+  - id: "city"
+    placeholder: "[CITY]"
+    description: "Specific city or town name when used to identify a person"
+  - id: "phone"
+    placeholder: "[PHONE]"
+    description: "Phone or fax number in any format or country"
+  - id: "account"
+    placeholder: "[ACCOUNT]"
+    description: "Bank account number, IBAN, credit/debit card, financial account"
+  - id: "id_document"
+    placeholder: "[ID-DOC]"
+    description: "ID card number, passport number, driver license number"
+  - id: "tax_id"
+    placeholder: "[TAX-ID]"
+    description: "Tax code, fiscal code, VAT number, social security number (any country)"
+  - id: "license_plate"
+    placeholder: "[PLATE]"
+    description: "Vehicle license plate number"
+  - id: "personal_url"
+    placeholder: "[PROFILE-URL]"
+    description: "Personal profile URL or personal website"
+  - id: "signature"
+    placeholder: "[SIGNATURE]"
+    description: "Name appearing in a signature block or sign-off"
+
+regex_rules:
+  # Email (universal)
+  - name: "Email"
+    pattern: '\b[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}\b'
+    placeholder: "[EMAIL]"
+
+  # URLs (http/https)
+  - name: "URL"
+    pattern: 'https?://[^\s<>"\''{}|\\^`\[\]]+'
+    placeholder: "[URL]"
+
+  # IPv4 address (strict)
+  - name: "IPv4"
+    pattern: '\b(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\b'
+    placeholder: "[IP]"
+
+  # IPv6 address (full or compressed)
+  - name: "IPv6"
+    pattern: '\b(?:[0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4}\b|\b(?:[0-9A-Fa-f]{1,4}:){1,7}:\b|\b::(?:[0-9A-Fa-f]{1,4}:){0,6}[0-9A-Fa-f]{1,4}\b'
+    placeholder: "[IP]"
+
+  # MAC address
+  - name: "MAC address"
+    pattern: '\b(?:[0-9A-Fa-f]{2}[:\-]){5}[0-9A-Fa-f]{2}\b'
+    placeholder: "[MAC]"
+
+  # IBAN (global: 2 letters + 2 digits + up to 30 alphanumeric, with optional spaces)
+  - name: "IBAN"
+    pattern: '\b[A-Z]{2}\d{2}(?:\s?[A-Z0-9]{4}){3,6}\s?[A-Z0-9]{1,4}\b'
+    placeholder: "[IBAN]"
+
+  # Credit/debit card (Visa, Mastercard, Amex, Discover)
+  - name: "Carta di credito"
+    pattern: '\b(?:4\d{3}|5[1-5]\d{2}|3[47]\d{2}|6011)[\s\-]?\d{4}[\s\-]?\d{4}[\s\-]?\d{3,4}\b'
+    placeholder: "[CARD]"
+
+  # Italian Codice Fiscale
+  - name: "Codice Fiscale IT"
+    pattern: '\b[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]\b'
+    placeholder: "[CF]"
+
+  # Italian Partita IVA (IT + 11 digits OR bare 11 digits preceded by "P.IVA" / "PI" label)
+  - name: "Partita IVA IT"
+    pattern: '\b(?:IT[\s\-]?)\d{11}\b|(?:P\.?\s*IVA|P\.?\s*I\.?|VAT)\s*:?\s*\d{11}\b'
+    placeholder: "[VAT-IT]"
+
+  # SSN USA (XXX-XX-XXXX)
+  - name: "SSN USA"
+    pattern: '\b\d{3}[\-\s]\d{2}[\-\s]\d{4}\b'
+    placeholder: "[SSN]"
+
+  # NHS number UK (NNN NNN NNNN)
+  - name: "NHS UK"
+    pattern: '\b\d{3}\s\d{3}\s\d{4}\b'
+    placeholder: "[NHS]"
+
+  # International phone (+XX prefix)
+  - name: "Telefono internazionale"
+    pattern: '\+\d{1,3}[\s\-]?\(?\d{1,4}\)?[\s\-]?\d{2,5}[\s\-]?\d{2,5}(?:[\s\-]?\d{1,5})?\b'
+    placeholder: "[PHONE]"
+
+  # Italian / EU mobile & landline (no + prefix)
+  - name: "Telefono IT/EU"
+    pattern: '\b(?:0\d{1,4}[\s\-]?\d{4,8}|3\d{2}[\s\-]?\d{6,7})\b'
+    placeholder: "[PHONE]"
+
+  # Italian street address
+  - name: "Indirizzo stradale IT"
+    pattern: '\b(?:Via|Viale|Corso|Piazza|Largo|Vicolo|Strada|Contrada|Loc(?:alit\xE0)?\.?)\s+[A-Z\xC0-\xFF a-z\xE0-\xFF][A-Za-z\xC0-\xFF\xE0-\xFF\s\.\-\x27]{1,40}\s+\d{1,4}[a-zA-Z]?\b'
+    placeholder: "[ADDRESS]"
+
+  # Italian license plate (2L-3D-2L, post-1994) — before ZIP patterns to avoid false matches
+  - name: "Targa IT"
+    pattern: '\b[A-Z]{2}\s?\d{3}\s?[A-Z]{2}\b'
+    placeholder: "[PLATE]"
+
+  # Italian CAP (ZIP)
+  - name: "CAP IT"
+    pattern: '(?<=,\s)\d{5}\b|(?<=\s)\d{5}(?=\s+[A-Z][a-z\xE0-\xFF])'
+    placeholder: "[ZIP]"
+
+  # UK postcode (requires space: "SW1A 2AA") — stricter to avoid matching plates
+  - name: "UK Postcode"
+    pattern: '\b[A-Z]{1,2}\d[A-Z\d]?\s+\d[A-Z]{2}\b'
+    placeholder: "[ZIP]"
+
+  # US/CA ZIP code (5 digits, optionally +4)
+  - name: "ZIP USA/CA"
+    pattern: '\b\d{5}(?:\-\d{4})?\b'
+    placeholder: "[ZIP]"
+
+  # Dates DD/MM/YYYY, MM/DD/YYYY, DD-MM-YYYY, DD.MM.YYYY
+  - name: "Data gg/mm/aaaa"
+    pattern: '\b\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{4}\b'
+    placeholder: "[DATE]"
+
+  # Dates YYYY-MM-DD (ISO)
+  - name: "Data ISO 8601"
+    pattern: '\b\d{4}[\-\/]\d{2}[\-\/]\d{2}\b'
+    placeholder: "[DATE]"
+
+  # Italian written dates (1 gennaio 2024)
+  - name: "Data scritta IT"
+    pattern: '\b\d{1,2}\s+(?:gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)\s+\d{4}\b'
+    placeholder: "[DATE]"
+
+  # English written dates (January 1, 2024 / 1 January 2024)
+  - name: "Date EN"
+    pattern: '\b(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},?\s+\d{4}\b|\b\d{1,2}\s+(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}\b'
+    placeholder: "[DATE]"
+
+  # Protocol / document numbers (NNNN/XX/NNNN)
+  - name: "Numero protocollo"
+    pattern: '\b\d{4}\/[A-Z]{2,6}\/\d{3,6}\b'
+    placeholder: "[PROT]"
+
+  # Coordinates GPS (XX.XXXXXX, YY.YYYYYY — at least 4 decimal places)
+  - name: "Coordinate GPS"
+    pattern: '\b[-+]?\d{1,3}\.\d{4,8},\s*[-+]?\d{1,3}\.\d{4,8}\b'
+    placeholder: "[COORDS]"
+
+ai_prompt_template: "You are a professional anonymization assistant. Your ONLY task is to identify and replace all personally identifiable information (PII) in the document below.\n\nUSE EXACTLY THESE PLACEHOLDERS:\n{entity_list}\n\nADDITIONAL REGEX-REPLACED PLACEHOLDERS ALREADY IN THE TEXT:\n[EMAIL], [URL], [IP], [MAC], [IBAN], [CARD], [CF], [VAT-IT], [SSN], [NHS], [PHONE], [ADDRESS], [ZIP], [PLATE], [DATE], [PROT], [COORDS]\n\nFUNDAMENTAL RULES:\n1. Use the SAME placeholder consistently for the SAME person or entity throughout the document\n2. START IMMEDIATELY with the anonymized text — ZERO preamble (no \"Here is...\", \"Sure...\", \"Certainly...\")\n3. Do NOT change anything else: keep structure, punctuation, numbers, facts, all non-PII content\n4. When in doubt, anonymize — safer to over-anonymize than under-anonymize\n5. Match the LANGUAGE of the source document in your output\n6. Replace names in: running text, headers, signatures, footers, metadata fields, lists\n7. Replace partial names and nicknames if they identify a specific individual\n\nDOCUMENT TO ANONYMIZE:\n"

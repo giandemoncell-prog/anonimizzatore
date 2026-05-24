@@ -1,0 +1,59 @@
+name: "Documenti HR italiani"
+language: "it"
+description: "Contratti di lavoro, buste paga, valutazioni delle prestazioni, referenze"
+document_type: "documenti HR e del lavoro italiani"
+output_format: "preserve"
+
+entity_types:
+  - id: "employee"
+    placeholder: "[Dipendente]"
+    description: "Nome del dipendente"
+  - id: "employer"
+    placeholder: "[Datore di lavoro]"
+    description: "Nome della persona fisica datore di lavoro"
+  - id: "manager"
+    placeholder: "[Responsabile]"
+    description: "Responsabile diretto o superiore gerarchico"
+  - id: "hr_manager"
+    placeholder: "[Responsabile HR]"
+    description: "Responsabile delle risorse umane"
+  - id: "company"
+    placeholder: "[Azienda]"
+    description: "Ragione sociale dell'azienda"
+  - id: "city"
+    placeholder: "[Comune]"
+    description: "Comune o citt\xE0 identificativa"
+  - id: "birth_place"
+    placeholder: "[Luogo di nascita]"
+    description: "Luogo di nascita del dipendente"
+
+regex_rules:
+  - name: "Codici fiscali"
+    pattern: '\b[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]\b'
+    placeholder: "[CF]"
+  - name: "Partite IVA"
+    pattern: '\b\d{11}\b'
+    placeholder: "[P.IVA]"
+  - name: "IBAN"
+    pattern: '\bIT\d{2}[A-Z]\d{22}\b'
+    placeholder: "[IBAN]"
+  - name: "Telefoni"
+    pattern: '\b(?:\+39[\s\-]?)?(?:0\d{1,4}[\s\-]?\d{4,8}|3\d{2}[\s\-]?\d{6,7})\b'
+    placeholder: "[Telefono]"
+  - name: "Email"
+    pattern: '\b[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}\b'
+    placeholder: "[Email]"
+  - name: "Indirizzi stradali"
+    pattern: '\b(?:Via|Viale|Corso|Piazza|Largo|Vicolo|Strada)\s+[A-Za-z\xC0-\xFF\xE0-\xFF][A-Za-z\xC0-\xFF\xE0-\xFF\s\.\-]{1,40}\s+\d{1,4}[a-zA-Z]?\b'
+    placeholder: "[Indirizzo]"
+  - name: "CAP"
+    pattern: '(?<=,\s)\d{5}\b|(?<=\s)\d{5}(?=\s+[A-Z][a-z\xE0-\xFF])'
+    placeholder: "[CAP]"
+  - name: "Date numeriche"
+    pattern: '\b\d{1,2}[/\-\.]\d{1,2}[/\-\.]\d{4}\b'
+    placeholder: "[Data]"
+  - name: "Date scritte"
+    pattern: '\b\d{1,2}\s+(?:gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)\s+\d{4}\b'
+    placeholder: "[Data]"
+
+ai_prompt_template: "Sei un assistente specializzato nell'anonimizzazione di {document_type}.\n\nSostituisci i dati personali identificativi usando ESATTAMENTE questi segnaposto:\n{entity_list}\n\nREGOLE:\n1. Usa SEMPRE lo stesso segnaposto per la stessa persona o entit\xE0\n2. INIZIA SUBITO con il testo anonimizzato, senza prefissi\n3. Non modificare importi, percentuali, qualifiche, date gi\xE0 anonimizzate\n4. Sostituisci i nomi anche nelle firme e nelle intestazioni\n\nTESTO DA ANONIMIZZARE:\n"

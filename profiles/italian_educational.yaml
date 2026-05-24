@@ -1,0 +1,77 @@
+name: "Documenti scolastici italiani (PDP/PEI)"
+language: "it"
+description: "PDP, PEI, profili di funzionamento, diagnosi funzionali, relazioni cliniche"
+document_type: "documenti scolastici italiani (PDP, PEI, diagnosi funzionali)"
+output_format: "preserve"
+
+entity_types:
+  - id: "student"
+    placeholder: "[Nome dell'alunno]"
+    description: "Nome e cognome dello studente"
+  - id: "parent"
+    placeholder: "[Genitore {n}]"
+    description: "Genitori o tutori legali (numerati automaticamente)"
+  - id: "relative"
+    placeholder: "[Familiare]"
+    description: "Altri familiari (nonni, zii, fratelli)"
+  - id: "teacher"
+    placeholder: "[Docente]"
+    description: "Insegnanti curricolari"
+  - id: "support_teacher"
+    placeholder: "[Docente di sostegno]"
+    description: "Insegnante di sostegno"
+  - id: "specialist"
+    placeholder: "[Specialista]"
+    description: "Psicologi, neuropsichiatri, logopedisti"
+  - id: "therapist"
+    placeholder: "[Terapista]"
+    description: "Terapisti (fisio, occupazionale, ecc.)"
+  - id: "professional"
+    placeholder: "[Professionista]"
+    description: "Tutor privati, consulenti, professionisti esterni"
+  - id: "principal"
+    placeholder: "[Dirigente]"
+    description: "Dirigente scolastico"
+  - id: "school"
+    placeholder: "[Scuola]"
+    description: "Nome specifico della scuola"
+  - id: "city"
+    placeholder: "[Comune]"
+    description: "Comune o città identificativa"
+  - id: "birth_place"
+    placeholder: "[Luogo di nascita]"
+    description: "Luogo di nascita dell'alunno"
+  - id: "health_facility"
+    placeholder: "[Struttura sanitaria]"
+    description: "Ospedali, ASL, centri clinici, strutture sanitarie"
+
+regex_rules:
+  - name: "Codici fiscali"
+    pattern: '\b[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]\b'
+    placeholder: "[CF]"
+  - name: "Telefoni"
+    pattern: '\b(?:\+39[\s\-]?)?(?:0\d{1,4}[\s\-]?\d{4,8}|3\d{2}[\s\-]?\d{6,7})\b'
+    placeholder: "[Telefono]"
+  - name: "Email"
+    pattern: '\b[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}\b'
+    placeholder: "[Email]"
+  - name: "Indirizzi stradali"
+    pattern: '\b(?:Via|Viale|Corso|Piazza|Largo|Vicolo|Strada|Contrada|Loc(?:alit\xE0)?\.?)\s+[A-Z\xC0-\xFF a-z\xE0-\xFF][A-Za-z\xC0-\xFF\xE0-\xFF\s\.\-\x27]{1,40}\s+\d{1,4}[a-zA-Z]?\b'
+    placeholder: "[Indirizzo]"
+  - name: "CAP"
+    pattern: '(?<=,\s)\d{5}\b|(?<=\s)\d{5}(?=\s+[A-Z][a-z\xE0-\xFF])'
+    placeholder: "[CAP]"
+  - name: "Numeri protocollo"
+    pattern: '\b\d{4}/[A-Z]{2,6}/\d{3,6}\b'
+    placeholder: "[N. Protocollo]"
+  - name: "Date numeriche"
+    pattern: '\b\d{1,2}[/\-\.]\d{1,2}[/\-\.]\d{4}\b'
+    placeholder: "[Mese/Anno]"
+  - name: "Date scritte"
+    pattern: '\b\d{1,2}\s+(?:gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)\s+\d{4}\b'
+    placeholder: "[Mese/Anno]"
+  - name: "Mese/anno"
+    pattern: '\b(?:gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)\s+\d{4}\b'
+    placeholder: "[Mese/Anno]"
+
+ai_prompt_template: "Sei un assistente specializzato nell'anonimizzazione di {document_type}.\n\nIl tuo unico compito \xE8 sostituire i dati personali identificativi usando i segnaposto indicati. NON modificare nient'altro: mantieni struttura, punteggiatura, diagnosi, punteggi, contenuti pedagogici.\n\nSEGNAPOSTO DA USARE:\n{entity_list}\n\nREGOLE FONDAMENTALI:\n1. Usa SEMPRE lo stesso segnaposto per la stessa persona in tutto il documento\n2. INIZIA SUBITO con il testo anonimizzato — ZERO prefissi come \"Ecco il testo:\" o \"Certamente:\"\n3. Non aggiungere testo, non correggere errori grammaticali, non riformulare frasi\n4. Se un nome appare nella sezione firme, sostituiscilo anche l\xEC\n\nTESTO DA ANONIMIZZARE:\n"

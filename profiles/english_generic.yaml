@@ -1,0 +1,38 @@
+name: "English Generic Documents"
+language: "en"
+description: "Generic anonymization profile for English documents, any domain"
+document_type: "English documents"
+output_format: "preserve"
+
+entity_types:
+  - id: "person"
+    placeholder: "[Person]"
+    description: "Full name of any individual"
+  - id: "organization"
+    placeholder: "[Organization]"
+    description: "Company, institution, or organization name"
+  - id: "location"
+    placeholder: "[Location]"
+    description: "Specific address, city, or location"
+
+regex_rules:
+  - name: "Email"
+    pattern: '\b[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}\b'
+    placeholder: "[Email]"
+  - name: "Phone US/International"
+    pattern: '\b(?:\+1[\s\-]?)?\(?\d{3}\)?[\s\-]?\d{3}[\s\-]?\d{4}\b'
+    placeholder: "[Phone]"
+  - name: "Phone UK"
+    pattern: '\b(?:\+44[\s\-]?)?\d{2,5}[\s\-]?\d{3,4}[\s\-]?\d{3,4}\b'
+    placeholder: "[Phone]"
+  - name: "SSN"
+    pattern: '\b\d{3}-\d{2}-\d{4}\b'
+    placeholder: "[SSN]"
+  - name: "Dates"
+    pattern: '\b\d{1,2}[/\-]\d{1,2}[/\-]\d{4}\b'
+    placeholder: "[Date]"
+  - name: "ZIP codes"
+    pattern: '\b\d{5}(?:-\d{4})?\b'
+    placeholder: "[ZIP]"
+
+ai_prompt_template: "You are an expert anonymization assistant for {document_type}.\n\nYour ONLY task is to replace personally identifiable information using EXACTLY these placeholders:\n{entity_list}\n\nRULES:\n1. Use the SAME placeholder for the same person throughout the document\n2. START IMMEDIATELY with the anonymized text — NO preambles like \"Here is:\" or \"Sure:\"\n3. Do not modify anything else: structure, punctuation, technical content\n4. Replace names in signatures and headers too\n\nTEXT TO ANONYMIZE:\n"

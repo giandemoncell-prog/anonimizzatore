@@ -1,0 +1,65 @@
+name: "Documenti legali italiani"
+language: "it"
+description: "Contratti, verbali, atti notarili, sentenze, intimazioni"
+document_type: "documenti legali italiani"
+output_format: "preserve"
+
+entity_types:
+  - id: "client"
+    placeholder: "[Cliente]"
+    description: "Cliente o parte assistita"
+  - id: "counterpart"
+    placeholder: "[Controparte]"
+    description: "Parte avversaria"
+  - id: "lawyer"
+    placeholder: "[Avvocato]"
+    description: "Avvocato o procuratore legale"
+  - id: "notary"
+    placeholder: "[Notaio]"
+    description: "Notaio rogante"
+  - id: "judge"
+    placeholder: "[Giudice]"
+    description: "Giudice o magistrato"
+  - id: "witness"
+    placeholder: "[Testimone]"
+    description: "Testimone o terzo intervenuto"
+  - id: "company"
+    placeholder: "[Societ\xE0]"
+    description: "Ragione sociale di aziende o societ\xE0"
+  - id: "court"
+    placeholder: "[Tribunale]"
+    description: "Nome specifico del tribunale o ufficio giudiziario"
+  - id: "city"
+    placeholder: "[Comune]"
+    description: "Comune o citt\xE0 identificativa"
+
+regex_rules:
+  - name: "Codici fiscali"
+    pattern: '\b[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]\b'
+    placeholder: "[CF]"
+  - name: "Partite IVA"
+    pattern: '\b(?:P\.?\s*IVA|Partita\s+IVA)[:\s]+\d{11}\b|\b\d{11}\b(?=\s*[-\s]?\s*(?:P\.?\s*IVA|Partita))'
+    placeholder: "[P.IVA]"
+  - name: "Telefoni"
+    pattern: '\b(?:\+39[\s\-]?)?(?:0\d{1,4}[\s\-]?\d{4,8}|3\d{2}[\s\-]?\d{6,7})\b'
+    placeholder: "[Telefono]"
+  - name: "Email"
+    pattern: '\b[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}\b'
+    placeholder: "[Email]"
+  - name: "Indirizzi stradali"
+    pattern: '\b(?:Via|Viale|Corso|Piazza|Largo|Vicolo|Strada)\s+[A-Za-z\xC0-\xFF\xE0-\xFF][A-Za-z\xC0-\xFF\xE0-\xFF\s\.\-]{1,40}\s+\d{1,4}[a-zA-Z]?\b'
+    placeholder: "[Indirizzo]"
+  - name: "CAP"
+    pattern: '(?<=,\s)\d{5}\b|(?<=\s)\d{5}(?=\s+[A-Z][a-z\xE0-\xFF])'
+    placeholder: "[CAP]"
+  - name: "Date numeriche"
+    pattern: '\b\d{1,2}[/\-\.]\d{1,2}[/\-\.]\d{4}\b'
+    placeholder: "[Data]"
+  - name: "Date scritte"
+    pattern: '\b\d{1,2}\s+(?:gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)\s+\d{4}\b'
+    placeholder: "[Data]"
+  - name: "Numeri RG/Protocollo"
+    pattern: '\b(?:R\.?G\.?|N\.?\s*R\.?G\.?|Proc\.?)\s*\d+/\d{4}\b|\b\d{4}/[A-Z]{2,6}/\d{3,6}\b'
+    placeholder: "[N. Procedimento]"
+
+ai_prompt_template: "Sei un assistente specializzato nell'anonimizzazione di {document_type}.\n\nSostituisci i dati personali identificativi usando ESATTAMENTE questi segnaposto:\n{entity_list}\n\nREGOLE:\n1. Usa SEMPRE lo stesso segnaposto per la stessa persona o entit\xE0\n2. INIZIA SUBITO con il testo anonimizzato, senza prefissi\n3. Non modificare termini legali, riferimenti normativi, importi, date gi\xE0 anonimizzate\n4. Sostituisci i nomi anche nelle firme, intestazioni e formule di chiusura\n\nTESTO DA ANONIMIZZARE:\n"

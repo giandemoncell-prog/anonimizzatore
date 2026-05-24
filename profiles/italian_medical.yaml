@@ -1,0 +1,59 @@
+name: "Documenti medici italiani"
+language: "it"
+description: "Cartelle cliniche, referti, lettere di dimissione, prescrizioni"
+document_type: "documenti medici italiani"
+output_format: "preserve"
+
+entity_types:
+  - id: "patient"
+    placeholder: "[Paziente]"
+    description: "Nome e cognome del paziente"
+  - id: "patient_relative"
+    placeholder: "[Familiare del paziente]"
+    description: "Familiari o accompagnatori del paziente"
+  - id: "doctor"
+    placeholder: "[Medico]"
+    description: "Medico curante o di base"
+  - id: "specialist_doctor"
+    placeholder: "[Medico specialista]"
+    description: "Medici specialisti (cardiologo, ortopedico, ecc.)"
+  - id: "nurse"
+    placeholder: "[Infermiere]"
+    description: "Infermieri e personale paramedico"
+  - id: "hospital"
+    placeholder: "[Struttura sanitaria]"
+    description: "Ospedali, cliniche, poliambulatori"
+  - id: "ward"
+    placeholder: "[Reparto]"
+    description: "Reparto ospedaliero specifico con nome identificativo"
+  - id: "city"
+    placeholder: "[Comune]"
+    description: "Comune o città identificativa"
+  - id: "birth_place"
+    placeholder: "[Luogo di nascita]"
+    description: "Luogo di nascita del paziente"
+
+regex_rules:
+  - name: "Codici fiscali"
+    pattern: '\b[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]\b'
+    placeholder: "[CF]"
+  - name: "Telefoni"
+    pattern: '\b(?:\+39[\s\-]?)?(?:0\d{1,4}[\s\-]?\d{4,8}|3\d{2}[\s\-]?\d{6,7})\b'
+    placeholder: "[Telefono]"
+  - name: "Email"
+    pattern: '\b[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}\b'
+    placeholder: "[Email]"
+  - name: "Indirizzi stradali"
+    pattern: '\b(?:Via|Viale|Corso|Piazza|Largo|Vicolo|Strada|Contrada)\s+[A-Za-z\xC0-\xFF\xE0-\xFF][A-Za-z\xC0-\xFF\xE0-\xFF\s\.\-]{1,40}\s+\d{1,4}[a-zA-Z]?\b'
+    placeholder: "[Indirizzo]"
+  - name: "CAP"
+    pattern: '(?<=,\s)\d{5}\b|(?<=\s)\d{5}(?=\s+[A-Z][a-z\xE0-\xFF])'
+    placeholder: "[CAP]"
+  - name: "Date numeriche"
+    pattern: '\b\d{1,2}[/\-\.]\d{1,2}[/\-\.]\d{4}\b'
+    placeholder: "[Data]"
+  - name: "Date scritte"
+    pattern: '\b\d{1,2}\s+(?:gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)\s+\d{4}\b'
+    placeholder: "[Data]"
+
+ai_prompt_template: "Sei un assistente specializzato nell'anonimizzazione di {document_type}.\n\nSostituisci i dati personali identificativi usando ESATTAMENTE questi segnaposto:\n{entity_list}\n\nREGOLE:\n1. Usa SEMPRE lo stesso segnaposto per la stessa persona\n2. INIZIA SUBITO con il testo anonimizzato, senza prefissi\n3. Non modificare diagnosi, farmaci, dosaggi, valori clinici\n4. Sostituisci i nomi anche nelle firme e nelle intestazioni\n\nTESTO DA ANONIMIZZARE:\n"

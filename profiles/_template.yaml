@@ -1,0 +1,63 @@
+# ============================================================
+# TEMPLATE PER PROFILI CUSTOM — Anonimizzatore General Purpose
+# ============================================================
+# Copia questo file, rinominalo (es. my_profile.yaml) e
+# personalizza i campi. I file che iniziano con _ sono ignorati.
+
+# Nome visualizzato nella GUI e nella CLI
+name: "Nome del mio profilo"
+
+# Codice lingua ISO 639-1 (es. "it", "en", "fr", "de", "es")
+language: "it"
+
+# Descrizione breve mostrata nella lista profili
+description: "Descrizione del tipo di documenti che questo profilo gestisce"
+
+# Tipo di documento iniettato nel prompt AI ({document_type})
+document_type: "documenti generici"
+
+# Formato di output: "preserve" (mantieni originale), "txt", "docx"
+output_format: "preserve"
+
+# ---- TIPI DI ENTITÀ ----------------------------------------
+# Ogni entità ha un id (interno), un placeholder (nel testo) e
+# una descrizione (mostrata nel prompt AI al modello).
+# Per placeholder numerati (es. Persona 1, Persona 2) usa {n}.
+entity_types:
+  - id: "person_a"
+    placeholder: "[Persona A]"
+    description: "Prima persona menzionata nel documento"
+  - id: "person_b"
+    placeholder: "[Persona B]"
+    description: "Seconda persona menzionata nel documento"
+  # Esempio con numerazione automatica:
+  # - id: "witness"
+  #   placeholder: "[Testimone {n}]"
+  #   description: "Testimoni (numerati automaticamente)"
+
+# ---- REGOLE REGEX ------------------------------------------
+# Applicate PRIMA del modello AI (più veloci e deterministiche).
+# I pattern sono Python regex in single-quote YAML.
+regex_rules:
+  - name: "Email"
+    pattern: '\b[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}\b'
+    placeholder: "[Email]"
+  # Aggiungi altre regole qui...
+
+# ---- PROMPT AI TEMPLATE ------------------------------------
+# Variabili disponibili: {document_type}, {language}, {entity_list}
+# {entity_list} viene sostituito con la lista formattata dei segnaposto.
+# Il testo da anonimizzare viene APPESO alla fine del template.
+ai_prompt_template: |
+  Sei un assistente specializzato nell'anonimizzazione di {document_type} in lingua {language}.
+
+  Il tuo UNICO compito è sostituire i dati personali identificativi usando ESATTAMENTE questi segnaposto:
+  {entity_list}
+
+  REGOLE FONDAMENTALI:
+  1. Usa SEMPRE lo stesso segnaposto per la stessa persona in tutto il documento
+  2. INIZIA SUBITO con il testo anonimizzato — ZERO prefissi come "Ecco il testo:" o "Certamente:"
+  3. Non modificare nient'altro: struttura, punteggiatura, contenuto tecnico
+  4. Sostituisci i nomi anche nelle firme e nelle intestazioni
+
+  TESTO DA ANONIMIZZARE:
