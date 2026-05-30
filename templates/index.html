@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anonimizzatore General Purpose</title>
+  <style>
+    :root {
+      --blu: #2B5EA7;
+      --blu-l: #EBF0FA;
+      --verde: #2E7D32;
+      --verde-l: #E8F5E9;
+      --arancio: #E87722;
+      --grigio: #F5F5F5;
+      --testo: #1A1A2E;
+      --bordo: #DDDDEE;
+      --bianco: #FFFFFF;
+      --rosso: #C62828;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: var(--grigio);
+      color: var(--testo);
+      padding-bottom: 48px;
+    }
+    .wrap { max-width: 860px; margin: 0 auto; padding: 0 16px; }
+    header {
+      background: var(--blu);
+      color: var(--bianco);
+      text-align: center;
+      padding: 18px 16px;
+    }
+    header h1 { margin: 0; font-size: 22px; font-weight: 700; }
+    header p { margin: 4px 0 0; font-size: 13px; color: #C5D8FF; }
+    .card {
+      background: var(--bianco);
+      border: 1px solid var(--bordo);
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin: 14px 0;
+    }
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--blu);
+    }
+    label { font-size: 14px; }
+    select, input[type="text"], input[type="password"] {
+      font-size: 14px;
+      padding: 7px 8px;
+      border: 1px solid var(--bordo);
+      border-radius: 5px;
+      background: var(--grigio);
+      color: var(--testo);
+      width: 100%;
+    }
+    .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .row > label.fixed { width: 80px; flex: 0 0 80px; }
+    .grow { flex: 1 1 200px; min-width: 160px; }
+    .muted { color: #666; font-size: 13px; }
+    .desc { color: #555; font-size: 13px; margin-top: 8px; }
+    .checkbox-row { display: flex; align-items: center; gap: 8px; margin: 6px 0; font-size: 14px; }
+    .checkbox-row input { width: auto; }
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      font-size: 14px;
+      padding: 8px 14px;
+    }
+    button:disabled { opacity: .55; cursor: default; }
+    .btn-sm { background: var(--blu-l); color: var(--blu); font-size: 13px; padding: 6px 12px; }
+    .btn-sm:hover:not(:disabled) { background: var(--blu); color: var(--bianco); }
+    .btn-primary {
+      background: var(--arancio); color: var(--bianco);
+      font-size: 17px; font-weight: 700; padding: 12px 32px;
+    }
+    .btn-primary:hover:not(:disabled) { background: #C05A10; }
+    .btn-green {
+      background: var(--verde); color: var(--bianco);
+      font-weight: 700; padding: 10px 22px;
+    }
+    .btn-green:hover:not(:disabled) { background: #1B5E20; }
+    .center { text-align: center; margin: 8px 0; }
+    .drop {
+      border: 2px dashed var(--bordo);
+      border-radius: 8px;
+      padding: 22px;
+      text-align: center;
+      color: #777;
+      background: var(--grigio);
+      transition: border-color .15s, background .15s;
+      cursor: pointer;
+    }
+    .drop.over { border-color: var(--blu); background: var(--blu-l); }
+    .drop.has-file { border-color: var(--verde); color: var(--verde); background: var(--verde-l); }
+    .banner {
+      background: var(--verde-l); color: var(--verde);
+      font-weight: 700; padding: 12px 14px;
+      border-radius: 8px; margin: 14px 0; font-size: 14px;
+    }
+    .status-dot { font-weight: 600; }
+    .ok { color: var(--verde); }
+    .ko { color: var(--rosso); }
+    .pending { color: #888; }
+    pre.log {
+      background: #1E1E2E; color: #A8FF78;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 13px; padding: 10px;
+      border-radius: 6px; height: 150px; overflow-y: auto;
+      white-space: pre-wrap; word-break: break-word; margin: 0;
+    }
+    textarea.result {
+      width: 100%; height: 220px;
+      font-family: Consolas, "Courier New", monospace; font-size: 13px;
+      padding: 10px; border: 1px solid var(--bordo); border-radius: 6px;
+      background: #FAFAFA; color: var(--testo); resize: vertical;
+    }
+    .result-btns { margin-top: 8px; display: flex; gap: 8px; }
+    .hidden { display: none !important; }
+    .statusbar {
+      position: fixed; left: 0; right: 0; bottom: 0;
+      background: var(--blu); color: var(--bianco);
+      font-size: 13px; padding: 5px 12px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Anonimizzatore General Purpose</h1>
+    <p>AI locale · nessun dato al cloud</p>
+  </header>
+
+  <div class="wrap">
+
+    <!-- Profilo -->
+    <div class="card">
+      <h2>Profilo</h2>
+      <div class="row">
+        <label class="fixed">Profilo:</label>
+        <select id="profile" class="grow"></select>
+      </div>
+      <div class="desc" id="profileDesc">Seleziona un profilo per vedere la descrizione.</div>
+    </div>
+
+    <!-- Documento -->
+    <div class="card">
+      <h2>Documento</h2>
+      <div class="drop" id="dropArea">
+        <div id="dropText">Trascina qui un file oppure clicca per selezionarlo</div>
+        <input type="file" id="fileInput" class="hidden">
+      </div>
+      <div class="checkbox-row" style="margin-top:10px;">
+        <input type="checkbox" id="batchMode" disabled>
+        <label for="batchMode">Modalità batch (elabora cartella) — <span class="muted">disponibile via CLI</span></label>
+      </div>
+      <div class="muted">Formati: .txt .md .docx .pdf .xlsx .csv .html .eml .json .xml .odt .ods .pptx .rtf</div>
+    </div>
+
+    <!-- Backend AI -->
+    <div class="card">
+      <h2>Backend AI</h2>
+      <div class="row" style="margin-bottom:10px;">
+        <label><input type="radio" name="backend" value="ollama" checked> Ollama locale</label>
+        <label style="margin-left:16px;"><input type="radio" name="backend" value="openai_compat"> OpenAI-compatible</label>
+      </div>
+      <div class="row" style="margin-bottom:8px;">
+        <label class="fixed">URL:</label>
+        <input type="text" id="baseUrl" class="grow" value="http://localhost:11434">
+      </div>
+      <div class="row" style="margin-bottom:8px;">
+        <label class="fixed">Modello:</label>
+        <input type="text" id="model" class="grow" value="llama3.2" list="modelList">
+        <datalist id="modelList"></datalist>
+      </div>
+      <div class="row hidden" id="apiKeyRow" style="margin-bottom:8px;">
+        <label class="fixed">API Key:</label>
+        <input type="password" id="apiKey" class="grow">
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="noAi">
+        <label for="noAi">Solo regex — senza AI (più veloce, nessun modello richiesto)</label>
+      </div>
+      <div class="row" style="margin-top:6px;">
+        <span class="status-dot pending" id="backendStatus">● Verifica in corso…</span>
+        <button class="btn-sm" id="refreshBackend">↺ Aggiorna</button>
+      </div>
+    </div>
+
+    <!-- Opzioni -->
+    <div class="card">
+      <h2>Opzioni</h2>
+      <div class="checkbox-row">
+        <input type="checkbox" id="saveMapping">
+        <label for="saveMapping">Salva mapping table (pseudonimizzazione reversibile)</label>
+      </div>
+    </div>
+
+    <!-- Privacy -->
+    <div class="banner">🔒 Elaborazione 100% locale — i documenti non lasciano mai il computer</div>
+
+    <!-- Pulsante principale -->
+    <div class="center">
+      <button class="btn-primary" id="anonBtn">▶ Anonimizza documento</button>
+    </div>
+
+    <!-- Log -->
+    <div class="card">
+      <h2>Log elaborazione</h2>
+      <pre class="log" id="log"></pre>
+    </div>
+
+    <!-- Risultato -->
+    <div class="card">
+      <h2>Risultato anonimizzato</h2>
+      <textarea class="result" id="resultText" readonly></textarea>
+      <div class="result-btns">
+        <button class="btn-sm" id="copyResult">Copia</button>
+        <button class="btn-sm" id="downloadResult" disabled>↓ Scarica file</button>
+        <button class="btn-sm hidden" id="downloadMapping">↓ Scarica mapping</button>
+      </div>
+    </div>
+
+    <!-- De-anonimizza -->
+    <div class="card">
+      <h2>De-anonimizza</h2>
+      <div class="row" style="margin-bottom:8px;">
+        <label class="fixed">File:</label>
+        <input type="file" id="deanonFile" class="grow">
+      </div>
+      <div class="row" style="margin-bottom:10px;">
+        <label class="fixed">Mapping:</label>
+        <input type="file" id="deanonMapping" class="grow" accept=".json">
+      </div>
+      <div class="center">
+        <button class="btn-green" id="deanonBtn">↩ De-anonimizza</button>
+      </div>
+      <textarea class="result" id="deanonResult" readonly style="margin-top:10px;"></textarea>
+      <div class="result-btns">
+        <button class="btn-sm" id="copyDeanon">Copia</button>
+        <button class="btn-sm" id="downloadDeanon" disabled>↓ Scarica</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="statusbar" id="statusbar">Pronto</div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    let selectedFile = null;
+    let profiles = [];
+    let downloadInfo = null;      // {id, filename}
+    let mappingInfo = null;       // {id, filename}
+    let deanonInfo = null;        // {id, filename}
+
+    function setStatus(msg) { $("statusbar").textContent = msg; }
+    function appendLog(text) {
+      const el = $("log");
+      el.textContent += text;
+      el.scrollTop = el.scrollHeight;
+    }
+
+    function currentBackend() {
+      const provider = document.querySelector('input[name="backend"]:checked').value;
+      return {
+        provider,
+        base_url: $("baseUrl").value.trim(),
+        model: $("model").value.trim(),
+        api_key: $("apiKey").value.trim(),
+      };
+    }
+
+    // ---------- Inizializzazione ----------
+    async function init() {
+      try {
+        const r = await fetch("/api/profiles");
+        profiles = await r.json();
+        const sel = $("profile");
+        sel.innerHTML = "";
+        profiles.forEach(p => {
+          const opt = document.createElement("option");
+          opt.value = p.name;
+          opt.textContent = p.display_name;
+          sel.appendChild(opt);
+        });
+        updateProfileDesc();
+      } catch (e) { appendLog("Errore caricamento profili: " + e + "\n"); }
+
+      try {
+        const s = await (await fetch("/api/settings")).json();
+        const ai = s.ai || {};
+        if (ai.provider) {
+          const prov = ai.provider === "openai" ? "openai_compat" : ai.provider;
+          const radio = document.querySelector(`input[name="backend"][value="${prov}"]`);
+          if (radio) radio.checked = true;
+        }
+        if (ai.base_url) $("baseUrl").value = ai.base_url;
+        if (ai.model) $("model").value = ai.model;
+        if (ai.api_key) $("apiKey").value = ai.api_key;
+        if (s.default_profile) {
+          const opt = [...$("profile").options].find(o => o.value === s.default_profile);
+          if (opt) { $("profile").value = s.default_profile; updateProfileDesc(); }
+        }
+        toggleApiKeyRow();
+      } catch (e) { /* settings opzionali */ }
+
+      checkBackend();
+    }
+
+    function updateProfileDesc() {
+      const p = profiles.find(x => x.name === $("profile").value);
+      $("profileDesc").textContent = p && p.description ? p.description : "Nessuna descrizione disponibile.";
+    }
+
+    function toggleApiKeyRow() {
+      const provider = document.querySelector('input[name="backend"]:checked').value;
+      $("apiKeyRow").classList.toggle("hidden", provider !== "openai_compat");
+    }
+
+    // ---------- Backend status ----------
+    async function checkBackend() {
+      const statusEl = $("backendStatus");
+      if ($("noAi").checked) {
+        statusEl.className = "status-dot pending";
+        statusEl.textContent = "● Modalità solo regex attiva";
+        return;
+      }
+      statusEl.className = "status-dot pending";
+      statusEl.textContent = "● Verifica in corso…";
+      const b = currentBackend();
+      const qs = new URLSearchParams({
+        provider: b.provider, base_url: b.base_url, model: b.model, api_key: b.api_key,
+      });
+      try {
+        const r = await fetch("/api/backend-status?" + qs.toString());
+        const data = await r.json();
+        if (data.available) {
+          statusEl.className = "status-dot ok";
+          statusEl.textContent = "● Raggiungibile";
+          const dl = $("modelList");
+          dl.innerHTML = "";
+          (data.models || []).forEach(m => {
+            const o = document.createElement("option");
+            o.value = m;
+            dl.appendChild(o);
+          });
+        } else {
+          statusEl.className = "status-dot ko";
+          statusEl.textContent = "✗ Non raggiungibile";
+        }
+      } catch (e) {
+        statusEl.className = "status-dot ko";
+        statusEl.textContent = "✗ Non raggiungibile";
+      }
+    }
+
+    // ---------- Drag & drop ----------
+    const drop = $("dropArea");
+    function setFile(file) {
+      selectedFile = file;
+      if (file) {
+        drop.classList.add("has-file");
+        $("dropText").textContent = "📄 " + file.name;
+      } else {
+        drop.classList.remove("has-file");
+        $("dropText").textContent = "Trascina qui un file oppure clicca per selezionarlo";
+      }
+    }
+    drop.addEventListener("click", () => $("fileInput").click());
+    $("fileInput").addEventListener("change", (e) => {
+      if (e.target.files.length) setFile(e.target.files[0]);
+    });
+    drop.addEventListener("dragover", (e) => { e.preventDefault(); drop.classList.add("over"); });
+    drop.addEventListener("dragleave", () => drop.classList.remove("over"));
+    drop.addEventListener("drop", (e) => {
+      e.preventDefault();
+      drop.classList.remove("over");
+      if (e.dataTransfer.files.length) setFile(e.dataTransfer.files[0]);
+    });
+
+    // ---------- Eventi UI ----------
+    $("profile").addEventListener("change", updateProfileDesc);
+    $("refreshBackend").addEventListener("click", checkBackend);
+    $("noAi").addEventListener("change", checkBackend);
+    document.querySelectorAll('input[name="backend"]').forEach(r => {
+      r.addEventListener("change", () => {
+        const provider = document.querySelector('input[name="backend"]:checked').value;
+        $("baseUrl").value = provider === "ollama"
+          ? "http://localhost:11434" : "http://localhost:1234/v1";
+        toggleApiKeyRow();
+        checkBackend();
+      });
+    });
+
+    // ---------- Anonimizza (SSE) ----------
+    async function submitAnonymize() {
+      if (!selectedFile) { setStatus("Seleziona un file"); appendLog("Nessun file selezionato.\n"); return; }
+      const btn = $("anonBtn");
+      btn.disabled = true;
+      btn.textContent = "Elaborazione…";
+      $("log").textContent = "";
+      $("resultText").value = "";
+      $("downloadResult").disabled = true;
+      $("downloadMapping").classList.add("hidden");
+      downloadInfo = null; mappingInfo = null;
+      setStatus("Elaborazione in corso…");
+
+      const fd = new FormData();
+      fd.append("file", selectedFile);
+      fd.append("profile", $("profile").value);
+      fd.append("use_ai", $("noAi").checked ? "false" : "true");
+      fd.append("save_mapping", $("saveMapping").checked ? "true" : "false");
+      fd.append("backend", JSON.stringify(currentBackend()));
+
+      try {
+        const resp = await fetch("/api/anonymize", { method: "POST", body: fd });
+        if (!resp.ok) {
+          const err = await resp.json().catch(() => ({ error: "Errore HTTP " + resp.status }));
+          throw new Error(err.error || "Errore sconosciuto");
+        }
+        const reader = resp.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = "";
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          let idx;
+          while ((idx = buffer.indexOf("\n\n")) !== -1) {
+            const raw = buffer.slice(0, idx);
+            buffer = buffer.slice(idx + 2);
+            const line = raw.startsWith("data:") ? raw.slice(5).trim() : raw.trim();
+            if (!line) continue;
+            handleEvent(JSON.parse(line));
+          }
+        }
+      } catch (e) {
+        appendLog("ERRORE: " + e.message + "\n");
+        setStatus("Errore");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "▶ Anonimizza documento";
+      }
+    }
+
+    function handleEvent(ev) {
+      if (ev.type === "log") {
+        appendLog(ev.text + "\n");
+      } else if (ev.type === "token") {
+        $("resultText").value += ev.text;
+        $("resultText").scrollTop = $("resultText").scrollHeight;
+      } else if (ev.type === "done") {
+        if (ev.text) $("resultText").value = ev.text;
+        downloadInfo = { id: ev.download_id, filename: ev.filename };
+        $("downloadResult").disabled = false;
+        if (ev.stats && Object.keys(ev.stats).length) {
+          const s = Object.entries(ev.stats).map(([k, v]) => `${k}:${v}`).join(", ");
+          appendLog("Regex matches: " + s + "\n");
+        }
+        appendLog("Completato → " + ev.filename + "\n");
+        if (ev.mapping_download_id) {
+          mappingInfo = { id: ev.mapping_download_id, filename: ev.mapping_filename };
+          $("downloadMapping").classList.remove("hidden");
+          appendLog("Mapping: " + ev.mapping_filename + "\n");
+        }
+        setStatus("Completato");
+      } else if (ev.type === "error") {
+        appendLog("ERRORE: " + ev.message + "\n");
+        setStatus("Errore");
+      }
+    }
+
+    function downloadFile(info) {
+      if (!info) return;
+      window.location.href = "/api/download/" + info.id + "/" + encodeURIComponent(info.filename);
+    }
+
+    $("anonBtn").addEventListener("click", submitAnonymize);
+    $("downloadResult").addEventListener("click", () => downloadFile(downloadInfo));
+    $("downloadMapping").addEventListener("click", () => downloadFile(mappingInfo));
+    $("copyResult").addEventListener("click", () => {
+      navigator.clipboard.writeText($("resultText").value).then(() => setStatus("Testo copiato"));
+    });
+
+    // ---------- De-anonimizza ----------
+    async function submitDeanonymize() {
+      const f = $("deanonFile").files[0];
+      const m = $("deanonMapping").files[0];
+      if (!f) { setStatus("Seleziona il file anonimizzato"); return; }
+      if (!m) { setStatus("Seleziona il file mapping"); return; }
+      const btn = $("deanonBtn");
+      btn.disabled = true;
+      btn.textContent = "De-anonimizzazione…";
+      deanonInfo = null;
+      $("downloadDeanon").disabled = true;
+      setStatus("De-anonimizzazione in corso…");
+
+      const fd = new FormData();
+      fd.append("file", f);
+      fd.append("mapping", m);
+      try {
+        const resp = await fetch("/api/deanonymize", { method: "POST", body: fd });
+        const data = await resp.json();
+        if (!resp.ok) throw new Error(data.error || "Errore");
+        $("deanonResult").value = data.text;
+        deanonInfo = { id: data.download_id, filename: data.filename };
+        $("downloadDeanon").disabled = false;
+        setStatus("De-anonimizzazione completata");
+      } catch (e) {
+        $("deanonResult").value = "ERRORE: " + e.message;
+        setStatus("Errore de-anonimizzazione");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "↩ De-anonimizza";
+      }
+    }
+
+    $("deanonBtn").addEventListener("click", submitDeanonymize);
+    $("downloadDeanon").addEventListener("click", () => downloadFile(deanonInfo));
+    $("copyDeanon").addEventListener("click", () => {
+      navigator.clipboard.writeText($("deanonResult").value).then(() => setStatus("Testo copiato"));
+    });
+
+    init();
+  </script>
+</body>
+</html>

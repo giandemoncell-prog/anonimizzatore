@@ -19,7 +19,11 @@ Progettato per avvocati, medici, psicologi, insegnanti di sostegno, HR manager e
 
 ## Screenshot
 
-> Screenshot in arrivo — la GUI sarà documentata con immagini prima della pubblicazione pubblica.
+### Web UI (browser-based)
+![Web UI](screenshots/gui_web.png)
+
+### Interfaccia desktop (GUI tkinter)
+La GUI desktop offre le stesse funzionalità in un'applicazione nativa Windows.
 
 ---
 
@@ -36,7 +40,7 @@ Individua e sostituisce nomi propri, strutture sanitarie, scuole, tribunali, azi
 
 ### Caratteristiche principali
 
-- **GUI desktop** intuitiva + **CLI** per automazione e batch processing
+- **GUI desktop** intuitiva + **Web UI** (browser, nessun plugin) + **CLI** per automazione e batch processing
 - **Profili configurabili** per dominio (scolastico, medico, legale, HR, inglese)
 - **Batch processing** su intere cartelle
 - **Pseudonimizzazione reversibile** — salva una mapping table JSON per de-anonimizzare in seguito
@@ -125,8 +129,6 @@ Documento anonimizzato (.docx / .txt)
 
 ## Download e installazione
 
-> L'installer Windows sarà disponibile a breve. Per ora scarica il bundle `.zip` dalla pagina Releases.
-
 **[Download bundle Windows (.zip)](https://github.com/giandemoncell-prog/anonimizzatore/releases/latest)**
 
 1. Scarica e decomprimi il file `.zip`
@@ -134,6 +136,21 @@ Documento anonimizzato (.docx / .txt)
 3. Installa [Ollama](https://ollama.ai) se vuoi usare la funzione AI (opzionale)
 
 **Dimensione bundle:** ~37 MB — nessuna dipendenza aggiuntiva richiesta.
+
+### Chromebook / Linux
+
+```bash
+# Scarica il pacchetto Chromebook dalla pagina Releases, poi:
+bash install.sh
+```
+
+### Web UI (qualsiasi browser)
+
+```bash
+# Avvia l'interfaccia web locale su http://localhost:5000
+.\start_web.ps1   # Windows
+bash start_chromebook.sh  # Linux / Chromebook
+```
 
 ---
 
@@ -146,7 +163,7 @@ Documento anonimizzato (.docx / .txt)
 | **Pro Perpetua** | €229 una tantum | Come Pro, aggiornamenti inclusi per 12 mesi |
 | **Studio** | €399/anno | Multi-postazione (fino a 5), CLI avanzata, audit trail |
 
-**[Acquista una licenza](https://TUO-LINK-VENDITA)** — pagamento sicuro, fattura IVA italiana disponibile.
+**[Acquista una licenza](mailto:giandemoncell@gmail.com?subject=Licenza%20Anonimizzatore)** — scrivi per ricevere il link di acquisto sicuro con fattura IVA italiana.
 
 Hai domande sul piano giusto per te? Scrivi a: **giandemoncell@gmail.com**
 
@@ -173,6 +190,8 @@ Non hai tempo per l'installazione? Offriamo un servizio di installazione e forma
 - [x] Batch processing
 - [x] Profilo Universal multilingua (16 regex globali)
 - [x] Modalità Solo Regex (senza AI, offline completo)
+- [x] Web UI (Flask, funziona su Chromebook e qualsiasi browser)
+- [x] Pacchetto Chromebook / Linux
 - [ ] macOS support
 - [ ] Profilo multilingua automatico (auto-detect lingua)
 - [ ] Editor profili integrato nella GUI

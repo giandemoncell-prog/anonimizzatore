@@ -1,0 +1,18 @@
+# Impostazioni globali dell'anonimizzatore
+# Modificabile dall'utente; sovrascrivibili da flag CLI
+
+default_profile: universal
+
+ai:
+  provider: ollama              # ollama | openai_compat
+  base_url: http://localhost:11434
+  model: llama3.2
+  api_key: null                 # null per Ollama; stringa per API con autenticazione
+  temperature: 0.05
+  max_tokens: 8192
+  context_window: 16384         # usato solo da Ollama
+
+output:
+  format: preserve              # preserve | txt | docx
+  save_mapping: false           # true per salvare il mapping table JSON
+  suffix: _anonimizzato         # suffisso aggiunto al nome del file di output

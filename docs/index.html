@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anonimizzatore General Purpose — Anonimizza documenti in locale, GDPR Art.9</title>
+  <meta name="description" content="Anonimizza documenti sensibili direttamente sul tuo PC. 100% locale, nessun cloud, 16 formati supportati, AI opzionale con Ollama. Conforme GDPR Art.9.">
+  <meta name="keywords" content="anonimizzatore, GDPR, privacy, documenti, locale, offline, avvocati, medici, insegnanti, HR">
+  <meta property="og:title" content="Anonimizzatore General Purpose">
+  <meta property="og:description" content="Anonimizza documenti sensibili in locale. Nessun cloud, GDPR Art.9 compliant.">
+  <meta property="og:type" content="website">
+  <style>
+    :root {
+      --blue: #2563eb;
+      --blue-dark: #1d4ed8;
+      --blue-light: #eff6ff;
+      --green: #16a34a;
+      --green-light: #f0fdf4;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-500: #6b7280;
+      --gray-700: #374151;
+      --gray-900: #111827;
+      --radius: 12px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--gray-900);
+      line-height: 1.6;
+    }
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 0 24px;
+    }
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 60px;
+    }
+    .nav-brand { font-weight: 700; font-size: 1.1rem; color: var(--gray-900); }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a { color: var(--gray-700); font-size: 0.9rem; }
+    .btn { display: inline-block; padding: 10px 22px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: opacity 0.15s; }
+    .btn:hover { opacity: 0.85; text-decoration: none; }
+    .btn-primary { background: var(--blue); color: #fff; }
+    .btn-secondary { background: var(--gray-100); color: var(--gray-700); border: 1px solid var(--gray-200); }
+    .btn-ghost { background: transparent; color: var(--blue); border: 2px solid var(--blue); }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #f8faff 0%, #eef4ff 100%);
+      padding: 80px 24px 96px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: var(--green-light); color: var(--green);
+      border: 1px solid #bbf7d0;
+      border-radius: 999px; padding: 4px 14px; font-size: 0.8rem; font-weight: 600;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800; line-height: 1.15;
+      color: var(--gray-900);
+      max-width: 700px; margin: 0 auto 20px;
+    }
+    .hero h1 span { color: var(--blue); }
+    .hero p {
+      font-size: 1.15rem; color: var(--gray-500);
+      max-width: 600px; margin: 0 auto 40px;
+    }
+    .hero-ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .hero-ctas .btn { font-size: 1rem; padding: 14px 28px; }
+
+    .hero-stats {
+      display: flex; gap: 40px; justify-content: center; flex-wrap: wrap;
+      margin-top: 56px; padding-top: 40px;
+      border-top: 1px solid var(--gray-200);
+    }
+    .stat { text-align: center; }
+    .stat-value { font-size: 1.8rem; font-weight: 800; color: var(--blue); }
+    .stat-label { font-size: 0.85rem; color: var(--gray-500); }
+
+    /* SECTIONS */
+    section { padding: 80px 24px; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-title {
+      font-size: 1.8rem; font-weight: 800; text-align: center;
+      margin-bottom: 12px;
+    }
+    .section-sub {
+      text-align: center; color: var(--gray-500); font-size: 1rem;
+      margin-bottom: 56px;
+    }
+
+    /* FEATURES */
+    .features { background: #fff; }
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+    .feature-card {
+      background: var(--gray-50); border: 1px solid var(--gray-200);
+      border-radius: var(--radius); padding: 28px;
+    }
+    .feature-icon { font-size: 2rem; margin-bottom: 16px; }
+    .feature-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+    .feature-card p { font-size: 0.92rem; color: var(--gray-500); }
+
+    /* FOR WHO */
+    .for-who { background: var(--gray-50); }
+    .who-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+    .who-card {
+      background: #fff; border: 1px solid var(--gray-200);
+      border-radius: var(--radius); padding: 24px;
+      border-left: 4px solid var(--blue);
+    }
+    .who-segment { font-size: 0.78rem; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+    .who-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+    .who-card p { font-size: 0.88rem; color: var(--gray-500); }
+
+    /* HOW IT WORKS */
+    .how { background: #fff; }
+    .how-steps { display: flex; gap: 0; align-items: stretch; flex-wrap: wrap; justify-content: center; }
+    .how-step {
+      flex: 1; min-width: 200px; max-width: 260px;
+      text-align: center; padding: 24px 16px;
+      position: relative;
+    }
+    .how-step:not(:last-child)::after {
+      content: '→';
+      position: absolute; right: -12px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.5rem; color: var(--gray-200);
+    }
+    .step-num {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--blue); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 1rem; margin: 0 auto 12px;
+    }
+    .how-step h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; }
+    .how-step p { font-size: 0.85rem; color: var(--gray-500); }
+
+    /* FORMATS */
+    .formats { background: var(--gray-50); }
+    .format-tags { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+    .format-tag {
+      background: #fff; border: 1px solid var(--gray-200);
+      border-radius: 8px; padding: 8px 16px;
+      font-size: 0.88rem; font-weight: 600; color: var(--gray-700);
+    }
+
+    /* PRICING */
+    .pricing { background: #fff; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; max-width: 960px; margin: 0 auto; }
+    .price-card {
+      border: 1px solid var(--gray-200); border-radius: var(--radius);
+      padding: 28px 24px; position: relative;
+    }
+    .price-card.featured {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 2px var(--blue);
+    }
+    .price-badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--blue); color: #fff;
+      font-size: 0.72rem; font-weight: 700; padding: 3px 12px; border-radius: 999px;
+      white-space: nowrap;
+    }
+    .price-plan { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gray-500); margin-bottom: 12px; }
+    .price-amount { font-size: 2rem; font-weight: 800; color: var(--gray-900); }
+    .price-period { font-size: 0.85rem; color: var(--gray-500); }
+    .price-desc { font-size: 0.85rem; color: var(--gray-500); margin: 16px 0 20px; line-height: 1.5; }
+    .price-features { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .price-features li { font-size: 0.85rem; display: flex; gap: 8px; }
+    .price-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+
+    /* FAQ */
+    .faq { background: var(--gray-50); }
+    .faq-list { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+    .faq-item {
+      background: #fff; border: 1px solid var(--gray-200);
+      border-radius: var(--radius); padding: 24px;
+    }
+    .faq-item h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 10px; color: var(--gray-900); }
+    .faq-item p { font-size: 0.9rem; color: var(--gray-500); }
+
+    /* CTA FINAL */
+    .cta-final {
+      background: linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 100%);
+      color: #fff; text-align: center; padding: 80px 24px;
+    }
+    .cta-final h2 { font-size: 2rem; font-weight: 800; margin-bottom: 16px; }
+    .cta-final p { font-size: 1.05rem; opacity: 0.85; margin-bottom: 40px; max-width: 500px; margin-left: auto; margin-right: auto; }
+    .cta-final .hero-ctas { margin-top: 0; }
+    .cta-final .btn-primary { background: #fff; color: var(--blue); }
+    .cta-final .btn-ghost { border-color: rgba(255,255,255,0.5); color: #fff; }
+
+    /* FOOTER */
+    footer {
+      background: var(--gray-900); color: var(--gray-500);
+      padding: 40px 24px; text-align: center;
+    }
+    .footer-inner { max-width: 1100px; margin: 0 auto; }
+    .footer-links { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+    .footer-links a { color: var(--gray-500); font-size: 0.88rem; }
+    .footer-links a:hover { color: #fff; text-decoration: none; }
+    .footer-copy { font-size: 0.82rem; }
+
+    /* RESPONSIVE */
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .how-step::after { display: none; }
+      .how-steps { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <span class="nav-brand">🔒 Anonimizzatore</span>
+    <div class="nav-links">
+      <a href="#funzionalita">Funzionalità</a>
+      <a href="#formati">Formati</a>
+      <a href="#prezzi">Prezzi</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://github.com/giandemoncell-prog/anonimizzatore" target="_blank">GitHub</a>
+      <a href="https://github.com/giandemoncell-prog/anonimizzatore/releases/latest" class="btn btn-primary">Download</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">✅ GDPR Art. 9 Compliant — elaborazione 100% in locale</div>
+  <h1>Anonimizza i tuoi documenti.<br><span>In locale.</span></h1>
+  <p>AI che gira sul tuo computer: i dati sensibili non lasciano mai la tua macchina. Nessun cloud, conformità GDPR garantita.</p>
+  <div class="hero-ctas">
+    <a href="https://github.com/giandemoncell-prog/anonimizzatore/releases/latest" class="btn btn-primary">Scarica gratis</a>
+    <a href="mailto:giandemoncell@gmail.com?subject=Licenza%20Anonimizzatore" class="btn btn-ghost">Acquista Pro — €79</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-value">16</div><div class="stat-label">formati supportati</div></div>
+    <div class="stat"><div class="stat-value">100%</div><div class="stat-label">elaborazione locale</div></div>
+    <div class="stat"><div class="stat-value">6</div><div class="stat-label">profili pronti</div></div>
+    <div class="stat"><div class="stat-value">0</div><div class="stat-label">dati inviati al cloud</div></div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="funzionalita">
+  <div class="section-inner">
+    <h2 class="section-title">Tutto quello che ti serve, sul tuo PC</h2>
+    <p class="section-sub">Tre interfacce per ogni esigenza, un unico motore affidabile.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>100% in locale, zero cloud</h3>
+        <p>L'elaborazione avviene solo sul tuo PC. Nessun documento viene mai inviato a server esterni. Conforme GDPR Art. 9 by design.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📂</div>
+        <h3>16 formati supportati</h3>
+        <p>Word, PDF, Excel, PowerPoint, email, OpenDocument, HTML, JSON, CSV e altri. Trascini il file, lo riprendi anonimizzato.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚙️</div>
+        <h3>Regex + AI contestuale</h3>
+        <p>Regole deterministiche per dati strutturati, AI per il contesto. Oppure modalità Solo Regex, totalmente offline senza nessun modello.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🖥️</div>
+        <h3>Tre interfacce</h3>
+        <p>GUI desktop nativa, Web UI nel browser (ottima su Chromebook), CLI per automazione. Una sola installazione, tutte le modalità.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔄</div>
+        <h3>Pseudonimizzazione reversibile</h3>
+        <p>Salva una mapping table JSON per de-anonimizzare in seguito quando necessario. Perfetto per workflow legali e sanitari.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📋</div>
+        <h3>Profili configurabili</h3>
+        <p>Profili YAML pronti per settore: scolastico, medico, legale, HR, inglese generico. Crea i tuoi per la tua specifica esigenza.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOR WHO -->
+<section class="for-who">
+  <div class="section-inner">
+    <h2 class="section-title">Fatto per i professionisti italiani</h2>
+    <p class="section-sub">Chi tratta dati sensibili quotidianamente ha bisogno di uno strumento affidabile e conforme.</p>
+    <div class="who-grid">
+      <div class="who-card">
+        <div class="who-segment">Scolastico</div>
+        <h3>Insegnanti di sostegno</h3>
+        <p>PEI, PDP e verbali con dati di alunni minori. Condividi documentazione didattica senza esporre nomi, diagnosi o dati di alunni e famiglie.</p>
+      </div>
+      <div class="who-card">
+        <div class="who-segment">Legale</div>
+        <h3>Avvocati</h3>
+        <p>Atti, contratti e fascicoli con parti e controparti. Prepara memorie e modelli riutilizzabili rimuovendo i dati identificativi in pochi secondi.</p>
+      </div>
+      <div class="who-card">
+        <div class="who-segment">Sanitario</div>
+        <h3>Psicologi e medici</h3>
+        <p>Cartelle cliniche, referti e relazioni con dati sulla salute. Tratta i dati Art. 9 senza rischio: nulla esce dal tuo studio.</p>
+      </div>
+      <div class="who-card">
+        <div class="who-segment">HR</div>
+        <h3>HR Manager</h3>
+        <p>CV, contratti e valutazioni del personale. Anonimizza candidature e pratiche prima di condividerle internamente o con fornitori.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how">
+  <div class="section-inner">
+    <h2 class="section-title">Come funziona</h2>
+    <p class="section-sub">Pipeline in due fasi: deterministica + contestuale.</p>
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="step-num">1</div>
+        <h4>Carica il documento</h4>
+        <p>Qualsiasi formato: .docx, .pdf, .xlsx, .eml e altri 12 formati.</p>
+      </div>
+      <div class="how-step">
+        <div class="step-num">2</div>
+        <h4>Regex deterministiche</h4>
+        <p>CF, email, IBAN, telefoni, date, targhe, CAP, SSN — sostituiti automaticamente.</p>
+      </div>
+      <div class="how-step">
+        <div class="step-num">3</div>
+        <h4>AI contestuale</h4>
+        <p>Nomi propri, strutture, aziende — rilevate con Ollama in locale. Opzionale.</p>
+      </div>
+      <div class="how-step">
+        <div class="step-num">4</div>
+        <h4>Documento anonimizzato</h4>
+        <p>Output nello stesso formato, mapping table JSON opzionale per de-anonimizzare.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORMATS -->
+<section class="formats" id="formati">
+  <div class="section-inner">
+    <h2 class="section-title">16 formati supportati</h2>
+    <p class="section-sub">Il documento esce nel formato originale dove possibile.</p>
+    <div class="format-tags">
+      <span class="format-tag">.docx (Word)</span>
+      <span class="format-tag">.pdf</span>
+      <span class="format-tag">.xlsx (Excel)</span>
+      <span class="format-tag">.pptx (PowerPoint)</span>
+      <span class="format-tag">.txt</span>
+      <span class="format-tag">.md</span>
+      <span class="format-tag">.csv</span>
+      <span class="format-tag">.json</span>
+      <span class="format-tag">.xml</span>
+      <span class="format-tag">.html / .htm</span>
+      <span class="format-tag">.eml (email)</span>
+      <span class="format-tag">.msg (Outlook)</span>
+      <span class="format-tag">.odt (LibreOffice)</span>
+      <span class="format-tag">.ods (LibreOffice Calc)</span>
+      <span class="format-tag">.rtf (Rich Text)</span>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="prezzi">
+  <div class="section-inner">
+    <h2 class="section-title">Prezzi trasparenti</h2>
+    <p class="section-sub">Parti gratis, passa a Pro quando sei pronto.</p>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-plan">Free</div>
+        <div class="price-amount">€0</div>
+        <div class="price-desc">Per scoprire lo strumento senza impegno.</div>
+        <ul class="price-features">
+          <li>Modalità Solo Regex offline</li>
+          <li>Formati .txt e .docx</li>
+          <li>5 documenti al mese</li>
+          <li>Profilo generico</li>
+        </ul>
+        <br>
+        <a href="https://github.com/giandemoncell-prog/anonimizzatore/releases/latest" class="btn btn-secondary" style="width:100%;text-align:center;display:block;margin-top:8px">Scarica</a>
+      </div>
+      <div class="price-card featured">
+        <div class="price-badge">Più popolare</div>
+        <div class="price-plan">Pro</div>
+        <div class="price-amount">€79<span class="price-period">/anno</span></div>
+        <div class="price-desc">Early bird. Poi €129/anno. Per i professionisti che usano lo strumento ogni giorno.</div>
+        <ul class="price-features">
+          <li>Tutti i 16 formati</li>
+          <li>Pipeline AI contestuale</li>
+          <li>Tutti i profili di settore</li>
+          <li>Batch processing</li>
+          <li>Pseudonimizzazione reversibile</li>
+          <li>Aggiornamenti inclusi</li>
+        </ul>
+        <br>
+        <a href="mailto:giandemoncell@gmail.com?subject=Licenza%20Pro%20Anonimizzatore" class="btn btn-primary" style="width:100%;text-align:center;display:block;margin-top:8px">Acquista Pro</a>
+      </div>
+      <div class="price-card">
+        <div class="price-plan">Pro Perpetua</div>
+        <div class="price-amount">€229</div>
+        <div class="price-period">una tantum</div>
+        <div class="price-desc">Licenza a vita. Aggiornamenti inclusi per 12 mesi. Nessun rinnovo.</div>
+        <ul class="price-features">
+          <li>Tutto di Pro</li>
+          <li>Nessun rinnovo annuale</li>
+          <li>Aggiornamenti 12 mesi</li>
+        </ul>
+        <br>
+        <a href="mailto:giandemoncell@gmail.com?subject=Licenza%20Perpetua%20Anonimizzatore" class="btn btn-secondary" style="width:100%;text-align:center;display:block;margin-top:8px">Contatta</a>
+      </div>
+      <div class="price-card">
+        <div class="price-plan">Studio</div>
+        <div class="price-amount">€399<span class="price-period">/anno</span></div>
+        <div class="price-desc">Per studi professionali con più postazioni.</div>
+        <ul class="price-features">
+          <li>Fino a 5 postazioni</li>
+          <li>Tutto di Pro</li>
+          <li>CLI avanzata</li>
+          <li>Audit trail</li>
+          <li>Supporto prioritario</li>
+        </ul>
+        <br>
+        <a href="mailto:giandemoncell@gmail.com?subject=Licenza%20Studio%20Anonimizzatore" class="btn btn-secondary" style="width:100%;text-align:center;display:block;margin-top:8px">Contatta</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="section-inner">
+    <h2 class="section-title">Domande frequenti</h2>
+    <p class="section-sub"></p>
+    <div class="faq-list">
+      <div class="faq-item">
+        <h4>I miei documenti vengono inviati al cloud?</h4>
+        <p>No, mai. Tutta l'elaborazione — regex e AI — avviene sul tuo computer. Nessun dato lascia la tua macchina: è questo il cuore del prodotto e la base della conformità GDPR Art. 9.</p>
+      </div>
+      <div class="faq-item">
+        <h4>La funzione AI è obbligatoria?</h4>
+        <p>No. Puoi usare la modalità Solo Regex, completamente offline e senza alcun modello AI. L'AI (Ollama o un endpoint compatibile OpenAI) è un'opzione che aggiunge comprensione del contesto quando ti serve.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Quali formati supporta?</h4>
+        <p>16 formati: .docx, .pdf, .xlsx, .pptx, .txt, .md, .csv, .json, .xml, .html, .eml, .msg, .odt, .ods, .rtf.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Posso creare profili per il mio settore?</h4>
+        <p>Sì. Con Pro crei profili di anonimizzazione su misura (scolastico, legale, sanitario, HR o personalizzati) per applicare in automatico le regole giuste a ogni tipo di documento.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Funziona su Chromebook o Linux?</h4>
+        <p>Sì. La Web UI (Flask) gira su qualsiasi sistema con Python 3.10+, inclusi Chromebook con Linux attivato. Il pacchetto specifico è disponibile nella pagina Releases.</p>
+      </div>
+      <div class="faq-item">
+        <h4>È disponibile per macOS?</h4>
+        <p>Al momento l'app è disponibile per Windows e Chromebook/Linux. Scrivici a <a href="mailto:giandemoncell@gmail.com">giandemoncell@gmail.com</a> se sei interessato a una versione macOS.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINALE -->
+<section class="cta-final">
+  <h2>I tuoi dati sensibili restano tuoi.</h2>
+  <p>Scarica la versione gratuita e anonimizza il tuo primo documento in meno di 2 minuti.</p>
+  <div class="hero-ctas">
+    <a href="https://github.com/giandemoncell-prog/anonimizzatore/releases/latest" class="btn btn-primary">Scarica gratis</a>
+    <a href="mailto:giandemoncell@gmail.com?subject=Licenza%20Anonimizzatore" class="btn btn-ghost">Acquista Pro — €79</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-links">
+      <a href="https://github.com/giandemoncell-prog/anonimizzatore">GitHub</a>
+      <a href="https://github.com/giandemoncell-prog/anonimizzatore/releases">Releases</a>
+      <a href="https://github.com/giandemoncell-prog/anonimizzatore/issues">Segnala bug</a>
+      <a href="mailto:giandemoncell@gmail.com">giandemoncell@gmail.com</a>
+    </div>
+    <div class="footer-copy">
+      Sviluppato in Italia — Conforme GDPR Regolamento UE 2016/679<br>
+      &copy; 2026 Anonimizzatore General Purpose — Tutti i diritti riservati
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

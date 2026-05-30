@@ -48,6 +48,16 @@ installer/
 
 # Materiali interni (non per repo pubblico)
 landing_page_copy.md
+producthunt_copy.md
+screenshot_gui.png
+
+# Pacchetti distribuibili pesanti (distribuiti via Google Drive / Releases)
+dist_drive/
+dist_zip/
+
+# Script di packaging interni
+package_chromebook.ps1
+package_zip.ps1
 
 # Tool e sessioni locali
 .claude/
