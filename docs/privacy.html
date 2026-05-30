@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — Anonimizzatore General Purpose</title>
+  <meta name="description" content="Privacy Policy di Anonimizzatore General Purpose. Il software elabora i documenti esclusivamente in locale, senza trasmettere dati a server esterni.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+           color: #1f2937; background: #f9fafb; line-height: 1.7; }
+    nav { background: #fff; border-bottom: 1px solid #e5e7eb; padding: 0 24px; position: sticky; top: 0; z-index: 10; }
+    .nav-inner { max-width: 760px; margin: 0 auto; display: flex; align-items: center;
+                 justify-content: space-between; height: 56px; }
+    .nav-brand { font-weight: 700; font-size: 1rem; color: #111827;
+                 display: flex; align-items: center; gap: 8px; text-decoration: none; }
+    .nav-brand img { border-radius: 6px; }
+    .nav-back { font-size: 0.88rem; color: #2563eb; text-decoration: none; }
+    .nav-back:hover { text-decoration: underline; }
+    .container { max-width: 760px; margin: 0 auto; padding: 48px 24px 80px; }
+    h1 { font-size: 2rem; font-weight: 800; color: #111827; margin-bottom: 8px; }
+    .meta { font-size: 0.875rem; color: #6b7280; margin-bottom: 40px; }
+    h2 { font-size: 1.2rem; font-weight: 700; color: #111827; margin: 32px 0 12px; }
+    p { margin-bottom: 14px; color: #374151; }
+    ul { margin: 0 0 14px 24px; color: #374151; }
+    ul li { margin-bottom: 6px; }
+    .highlight { background: #eff6ff; border-left: 4px solid #2563eb;
+                 padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 24px 0; }
+    .highlight p { margin: 0; font-weight: 500; color: #1e40af; }
+    a { color: #2563eb; }
+    footer { background: #111827; color: #6b7280; text-align: center;
+             padding: 24px; font-size: 0.82rem; }
+    footer a { color: #9ca3af; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">
+      <img src="logo.svg" alt="" width="24" height="24">
+      Anonimizzatore
+    </a>
+    <a href="index.html" class="nav-back">← Torna alla home</a>
+  </div>
+</nav>
+
+<div class="container">
+  <h1>Privacy Policy</h1>
+  <p class="meta">Ultimo aggiornamento: maggio 2026 · Versione software 1.1.0</p>
+
+  <div class="highlight">
+    <p>🔒 Anonimizzatore General Purpose elabora tutti i documenti esclusivamente sul computer dell'utente. Nessun documento, dato personale o contenuto viene inviato a server esterni da parte del software.</p>
+  </div>
+
+  <h2>1. Titolare del trattamento</h2>
+  <p>Il software Anonimizzatore General Purpose è sviluppato e distribuito da Gianluca Demontis, contattabile all'indirizzo <a href="mailto:giandemoncell@gmail.com">giandemoncell@gmail.com</a>.</p>
+
+  <h2>2. Dati trattati dal software</h2>
+  <p>Il software non trasmette dati a server del titolare né a terze parti. Tutti i dati trattati rimangono esclusivamente sul computer dell'utente:</p>
+  <ul>
+    <li><strong>Documenti caricati:</strong> elaborati in memoria e su disco locale, mai trasmessi.</li>
+    <li><strong>Impostazioni (settings.yaml):</strong> salvate localmente nella cartella di installazione.</li>
+    <li><strong>Mapping table JSON:</strong> se attivata la pseudonimizzazione, il file di mapping è salvato localmente e non è accessibile a terzi.</li>
+  </ul>
+
+  <h2>3. Funzionalità AI opzionale</h2>
+  <p>Se l'utente configura e abilita un backend AI, il testo del documento viene inviato esclusivamente all'endpoint configurato dall'utente stesso:</p>
+  <ul>
+    <li><strong>Ollama (predefinito):</strong> modello AI in esecuzione localmente sul computer dell'utente. Nessuna trasmissione esterna.</li>
+    <li><strong>API OpenAI-compatible (opzionale):</strong> se l'utente configura un endpoint esterno (es. OpenAI, LM Studio remoto), il testo viene trasmesso a quell'endpoint secondo le policy di quel servizio. L'utente è responsabile di questa scelta.</li>
+  </ul>
+  <p>La modalità <strong>Solo Regex</strong> non utilizza alcun modello AI e non effettua connessioni di rete.</p>
+
+  <h2>4. Dati di acquisto e licenza</h2>
+  <p>L'acquisto delle licenze Pro, Pro Perpetua e Studio è gestito da terze parti (Merchant of Record). Il titolare non raccoglie dati di pagamento. I dati forniti durante l'acquisto (nome, email, dati di fatturazione) sono trattati secondo la privacy policy del processore di pagamento.</p>
+  <p>In caso di acquisto diretto via email, il titolare conserva i dati minimi necessari per l'emissione della fattura (nome, email, eventuale P.IVA) per il periodo obbligatorio per legge (10 anni ai sensi del D.P.R. 633/1972).</p>
+
+  <h2>5. Sito web (GitHub Pages)</h2>
+  <p>Il sito web del prodotto è ospitato su GitHub Pages (GitHub, Inc.). GitHub può raccogliere dati tecnici anonimi (IP, browser, pagine visitate) secondo la propria <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">Privacy Policy</a>. Il titolare non ha accesso a questi dati.</p>
+  <p>Il sito web non utilizza cookie di profilazione, tracker analitici o pixel di terze parti.</p>
+
+  <h2>6. Diritti degli interessati (GDPR)</h2>
+  <p>Ai sensi del Regolamento UE 2016/679 (GDPR), gli interessati hanno diritto di accesso, rettifica, cancellazione, limitazione del trattamento e portabilità dei propri dati. Per esercitare questi diritti o per qualsiasi domanda: <a href="mailto:giandemoncell@gmail.com">giandemoncell@gmail.com</a>.</p>
+
+  <h2>7. Modifiche alla presente policy</h2>
+  <p>Eventuali aggiornamenti saranno pubblicati su questa pagina con la data di revisione aggiornata. L'uso continuato del software dopo la modifica costituisce accettazione della nuova policy.</p>
+
+  <h2>8. Contatti</h2>
+  <p><a href="mailto:giandemoncell@gmail.com">giandemoncell@gmail.com</a><br>
+  GitHub: <a href="https://github.com/giandemoncell-prog/anonimizzatore" target="_blank" rel="noopener">giandemoncell-prog/anonimizzatore</a></p>
+</div>
+
+<footer>
+  <p>&copy; 2026 Anonimizzatore General Purpose · <a href="index.html">Home</a> · Sviluppato in Italia</p>
+</footer>
+
+</body>
+</html>
