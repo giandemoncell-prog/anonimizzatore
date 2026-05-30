@@ -17,6 +17,7 @@ __pycache__/
 venv/
 env/
 .venv/
+.venv_web/
 
 # Profili e configurazione locale (sensibili)
 # I profili default sono nel README — non committare config personalizzate
@@ -51,9 +52,10 @@ landing_page_copy.md
 producthunt_copy.md
 screenshot_gui.png
 
-# Pacchetti distribuibili pesanti (distribuiti via Google Drive / Releases)
+# Pacchetti distribuibili pesanti (distribuiti via GitHub Releases)
 dist_drive/
 dist_zip/
+releases/
 
 # Script di packaging interni
 package_chromebook.ps1
@@ -66,4 +68,3 @@ package_zip.ps1
 # Web UI temp files
 outputs/
 uploads/
-.venv_web/
