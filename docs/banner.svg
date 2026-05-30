@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 200" role="img" aria-label="Anonimizzatore General Purpose banner">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1e40af"/>
+      <stop offset="70%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+    <linearGradient id="iconbg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="200" rx="16" fill="url(#bg)"/>
+
+  <!-- Decorative circles -->
+  <circle cx="820" cy="40" r="90" fill="white" opacity="0.04"/>
+  <circle cx="860" cy="160" r="60" fill="white" opacity="0.04"/>
+
+  <!-- Left accent bar -->
+  <rect x="0" y="0" width="5" height="200" rx="3" fill="white" opacity="0.4"/>
+
+  <!-- Icon: small lock on rounded square -->
+  <rect x="28" y="50" width="100" height="100" rx="22" fill="url(#iconbg)"/>
+  <!-- Lock arch -->
+  <path d="M56,104 C56,68 100,68 100,104"
+        fill="none" stroke="white" stroke-width="12" stroke-linecap="round"/>
+  <!-- Lock body -->
+  <rect x="46" y="100" width="64" height="50" rx="10" fill="white"/>
+  <!-- Keyhole -->
+  <circle cx="78" cy="122" r="8" fill="#1e40af"/>
+  <rect x="74" y="122" width="8" height="12" rx="4" fill="#1e40af"/>
+
+  <!-- Product name -->
+  <text x="154" y="94" font-family="Inter, system-ui, -apple-system, sans-serif"
+        font-size="38" font-weight="800" fill="white" letter-spacing="-0.5">
+    Anonimizzatore
+  </text>
+  <text x="154" y="130" font-family="Inter, system-ui, -apple-system, sans-serif"
+        font-size="24" font-weight="500" fill="#93c5fd">
+    General Purpose
+  </text>
+
+  <!-- Tagline -->
+  <text x="154" y="158" font-family="Inter, system-ui, -apple-system, sans-serif"
+        font-size="14" fill="#bfdbfe" opacity="0.85">
+    Anonimizzazione documenti 100% locale · GDPR Art. 9 · 16 formati · AI opzionale
+  </text>
+
+  <!-- Right badges -->
+  <rect x="660" y="66" width="90" height="28" rx="14" fill="white" opacity="0.12"/>
+  <text x="705" y="85" font-family="Inter, system-ui, sans-serif"
+        font-size="12" font-weight="600" fill="white" text-anchor="middle">Windows</text>
+
+  <rect x="760" y="66" width="112" height="28" rx="14" fill="white" opacity="0.12"/>
+  <text x="816" y="85" font-family="Inter, system-ui, sans-serif"
+        font-size="12" font-weight="600" fill="white" text-anchor="middle">Chromebook</text>
+
+  <rect x="660" y="106" width="212" height="28" rx="14" fill="#16a34a" opacity="0.3"/>
+  <text x="766" y="125" font-family="Inter, system-ui, sans-serif"
+        font-size="12" font-weight="600" fill="#86efac" text-anchor="middle">✓ GDPR Art. 9 Compliant</text>
+</svg>

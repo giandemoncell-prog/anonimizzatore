@@ -1,12 +1,20 @@
-# Anonimizzatore General Purpose
+<p align="center">
+  <img src="docs/banner.svg" alt="Anonimizzatore General Purpose" width="900"/>
+</p>
 
-**Anonimizzazione documenti 100% locale — nessun dato inviato al cloud.**
+<p align="center">
+  <a href="https://giandemoncell-prog.github.io/anonimizzatore/">Sito web</a> ·
+  <a href="https://github.com/giandemoncell-prog/anonimizzatore/releases/latest">Download</a> ·
+  <a href="mailto:giandemoncell@gmail.com">Acquista Pro</a>
+</p>
 
-![Platform](https://img.shields.io/badge/platform-Windows-blue)
-![Python](https://img.shields.io/badge/python-3.10%2B-blue)
-![License](https://img.shields.io/badge/license-Proprietary-red)
-![GDPR](https://img.shields.io/badge/GDPR-Art.9%20Compliant-green)
-![AI](https://img.shields.io/badge/AI-Ollama%20%7C%20OpenAI--compatible-orange)
+<p align="center">
+  <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Linux-blue" alt="Platform"/>
+  <img src="https://img.shields.io/badge/python-3.10%2B-blue" alt="Python"/>
+  <img src="https://img.shields.io/badge/license-Proprietary-red" alt="License"/>
+  <img src="https://img.shields.io/badge/GDPR-Art.9%20Compliant-green" alt="GDPR"/>
+  <img src="https://img.shields.io/badge/AI-Ollama%20%7C%20OpenAI--compatible-orange" alt="AI"/>
+</p>
 
 ---
 
