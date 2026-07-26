@@ -189,6 +189,36 @@ Non hai tempo per l'installazione? Offriamo un servizio di installazione e forma
 
 ---
 
+## Compilare moduli da archivio (funzione avanzata, opzionale)
+
+`compila_modulo.py` è uno strumento **separato e indipendente** dalla pipeline di anonimizzazione — fa l'operazione opposta: invece di nascondere dati personali, li recupera da un archivio locale (o da Gmail/Drive) e li inserisce in un modulo/scheda da compilare (es. anagrafica condominiale, richieste di enti, autocertificazioni), generando un PDF con campi modulo (AcroForm) editabili.
+
+Non richiede AI né Ollama. Le funzionalità di ricerca in Gmail/Drive sono opzionali e richiedono una configurazione OAuth separata (vedi sotto); la ricerca nell'archivio locale e la generazione del PDF funzionano subito, offline.
+
+**Ricerca nell'archivio locale** (nessuna configurazione richiesta):
+```
+python compila_modulo.py --cerca-archivio "via roma" "mario rossi" --archivio-root "D:\MioArchivio"
+```
+
+**Generazione del PDF compilato** da un file dati YAML (vedi `profiles/_esempio_modulo.yaml`):
+```
+python compila_modulo.py --dati profiles/_esempio_modulo.yaml --output modulo_compilato.pdf
+```
+
+**Integrazione Gmail/Drive (opzionale)** — richiede un progetto Google Cloud personale:
+1. Crea un progetto su [Google Cloud Console](https://console.cloud.google.com/) e abilita **Gmail API** e **Google Drive API**.
+2. Crea credenziali OAuth → tipo applicazione **Desktop app** → scarica il file JSON e rinominalo `credentials.json` (percorso configurabile in `settings.yaml` sotto `google.credentials_file`).
+3. Al primo utilizzo di `--cerca-mail`, `--leggi-mail` o `--bozza-risposta` si apre il browser per il consenso; il token viene salvato in `token.json` (mai committare né condividere questo file: equivale a una chiave d'accesso alla tua casella).
+```
+python compila_modulo.py --cerca-mail "from:amministratore@esempio.it"
+python compila_modulo.py --leggi-mail MESSAGE_ID --salva-mail archivio_mail.txt
+python compila_modulo.py --bozza-risposta --to destinatario@esempio.it --oggetto "Re: ..." --corpo "Testo..."
+```
+
+> `--bozza-risposta` crea **solo una bozza** in Gmail: non invia mai nulla automaticamente. L'allegato compilato va aggiunto manualmente prima dell'invio.
+
+---
+
 ## Roadmap
 
 - [x] GUI desktop + CLI
@@ -200,6 +230,7 @@ Non hai tempo per l'installazione? Offriamo un servizio di installazione e forma
 - [x] Modalità Solo Regex (senza AI, offline completo)
 - [x] Web UI (Flask, funziona su Chromebook e qualsiasi browser)
 - [x] Pacchetto Chromebook / Linux
+- [x] Compilazione moduli da archivio locale/Gmail/Drive (`compila_modulo.py`, funzione separata)
 - [ ] macOS support
 - [ ] Profilo multilingua automatico (auto-detect lingua)
 - [ ] Editor profili integrato nella GUI

@@ -23,6 +23,10 @@ env/
 # I profili default sono nel README — non committare config personalizzate
 # settings.yaml  ← decommentare se si vuole escludere
 
+# Credenziali OAuth Google e token (compila_modulo.py) — MAI committare
+credentials.json
+token.json
+
 # Tool files
 *.ico
 anon_icon.png

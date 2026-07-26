@@ -16,3 +16,16 @@ output:
   format: preserve              # preserve | txt | docx
   save_mapping: false           # true per salvare il mapping table JSON
   suffix: _anonimizzato         # suffisso aggiunto al nome del file di output
+
+# Usati solo da compila_modulo.py (funzione opzionale, separata dall'anonimizzazione):
+# compilare moduli/schede con dati recuperati da un archivio locale e/o Gmail/Drive.
+archivio:
+  root: null                    # es. E:\MioArchivio — cartella radice da cercare con --cerca-archivio
+
+google:
+  credentials_file: credentials.json   # client_secret.json da Google Cloud Console (OAuth Desktop app)
+  token_file: token.json               # cache locale del token OAuth, creata al primo login
+  scopes:
+    - https://www.googleapis.com/auth/gmail.readonly
+    - https://www.googleapis.com/auth/gmail.compose
+    - https://www.googleapis.com/auth/drive

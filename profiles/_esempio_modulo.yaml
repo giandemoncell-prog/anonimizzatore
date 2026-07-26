@@ -1,0 +1,45 @@
+# Esempio di file dati per `compila_modulo.py --dati ... --output ...`
+# Dati interamente fittizi — usa questo file come modello per i tuoi moduli reali.
+#
+# Uso:
+#   python compila_modulo.py --dati profiles/_esempio_modulo.yaml --output modulo_compilato.pdf
+
+titolo: "Scheda anagrafica condominiale"
+sottotitolo: "Condominio Via Esempio 1, Città Esempio — compilata a cura del condomino"
+
+sezioni:
+  - titolo: "SEZIONE 1 — Unità immobiliare"
+    righe:
+      - - {label: "Scala / Interno:", value: "Interno 2"}
+        - {label: "Piano:", value: "3"}
+        - {label: "Uso:", value: "Abitazione"}
+      - - {label: "Foglio catastale:", value: "12"}
+        - {label: "Particella:", value: "456"}
+        - {label: "Subalterno:", value: "7"}
+      - - {label: "Categoria catastale:", value: "A/2"}
+        - {label: "Rendita catastale (€):", value: "350,00"}
+        - {label: "", value: ""}
+
+  - titolo: "SEZIONE 2 — Proprietario"
+    righe:
+      - - {label: "Cognome e Nome:", value: "Rossi Mario"}
+        - {label: "Luogo e data di nascita:", value: "Milano, 01/01/1980"}
+      - - {label: "Codice Fiscale:", value: "RSSMRA80A01F205X"}
+        - {label: "Titolo:", value: "Proprietà esclusiva (1/1)"}
+      - - {label: "Residenza o domicilio:", value: "Via Esempio 1, 20100 Città Esempio"}
+        - {label: "Telefono:", value: "333 1234567"}
+      - - {label: "Email:", value: "mario.rossi@esempio.it"}
+        - {label: "PEC (se disponibile):", value: ""}
+
+  - titolo: "SEZIONE 5 — Note"
+    righe:
+      - - {label: "Note:", value: "Nessuna segnalazione al momento della compilazione.", multiline: true}
+
+nota_footer: >-
+  Ai sensi degli artt. 13 e 14 del Regolamento UE 2016/679, i dati raccolti saranno
+  trattati esclusivamente per le finalità indicate dal richiedente.
+
+note_extra:
+  - "Nota di esempio: segnala qui eventuali incongruenze nel modulo originale ricevuto."
+
+firma: true

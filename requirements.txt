@@ -24,3 +24,14 @@ striprtf>=0.0.26
 
 # Web UI (Chromebook/cross-platform)
 flask>=3.0.0
+
+# --- Solo per compila_modulo.py (funzione opzionale) ---
+
+# Generazione PDF con campi modulo (AcroForm)
+reportlab>=4.0.0
+
+# Integrazione Gmail/Drive (OAuth2) — necessarie solo per --cerca-mail/--leggi-mail/
+# --bozza-risposta e la ricerca su Drive; non richieste per --cerca-archivio o --dati/--output
+google-api-python-client>=2.100.0
+google-auth-httplib2>=0.2.0
+google-auth-oauthlib>=1.2.0

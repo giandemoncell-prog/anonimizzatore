@@ -97,17 +97,17 @@ regex_rules:
 
   # International phone (+XX prefix)
   - name: "Telefono internazionale"
-    pattern: '\+\d{1,3}[\s\-]?\(?\d{1,4}\)?[\s\-]?\d{2,5}[\s\-]?\d{2,5}(?:[\s\-]?\d{1,5})?\b'
+    pattern: '\+\d{1,3}[\s\-]?\(?\d{1,4}\)?[\s\-]?\d{2,5}[\s\-]?\d{2,5}(?:[\s\-]?\d{1,5})?(?!\d)'
     placeholder: "[PHONE]"
 
   # Italian / EU mobile & landline (no + prefix)
   - name: "Telefono IT/EU"
-    pattern: '\b(?:0\d{1,4}[\s\-]?\d{4,8}|3\d{2}[\s\-]?\d{6,7})\b'
+    pattern: '\b(?:0\d{1,4}[\s\-]?\d{4,8}|3\d{2}[\s\-]?\d{6,7})(?!\d)'
     placeholder: "[PHONE]"
 
   # Italian street address
   - name: "Indirizzo stradale IT"
-    pattern: '\b(?:Via|Viale|Corso|Piazza|Largo|Vicolo|Strada|Contrada|Loc(?:alit\xE0)?\.?)\s+[A-Z\xC0-\xFF a-z\xE0-\xFF][A-Za-z\xC0-\xFF\xE0-\xFF\s\.\-\x27]{1,40}\s+\d{1,4}[a-zA-Z]?\b'
+    pattern: '\b(?:Via|Viale|Corso|Piazza|Largo|Vicolo|Strada|Contrada|Loc(?:alit\xE0)?\.?)\s+[A-Z\xC0-\xFF a-z\xE0-\xFF][A-Za-z\xC0-\xFF\xE0-\xFF\s\.\-\x27]{1,40},?\s+\d{1,4}[a-zA-Z]?\b'
     placeholder: "[ADDRESS]"
 
   # Italian license plate (2L-3D-2L, post-1994) — before ZIP patterns to avoid false matches
