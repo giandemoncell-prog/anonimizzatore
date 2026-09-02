@@ -1,0 +1,36 @@
+# Anonimizzatore General Purpose
+
+> Software desktop (Windows, Chromebook/Linux) che anonimizza documenti sensibili interamente in locale: nessun dato lascia il computer dell'utente. 16 formati supportati, regole regex deterministiche + AI contestuale opzionale (Ollama locale o endpoint compatibile OpenAI). Conforme GDPR Art. 9.
+
+## Cosa fa
+
+Anonimizzatore rimuove o pseudonimizza dati personali/sensibili da documenti (nomi, codici fiscali, email, IBAN, telefoni, indirizzi, date, targhe) tramite una pipeline in due fasi: regex deterministiche per dati strutturati, poi opzionalmente un modello AI locale per il contesto (nomi propri, aziende, strutture). Supporta pseudonimizzazione reversibile con mapping table JSON.
+
+## Per chi
+
+- Insegnanti di sostegno: PEI, PDP, verbali con dati di alunni minori
+- Avvocati: atti, contratti, fascicoli con parti e controparti
+- Psicologi e medici: cartelle cliniche, referti, dati sanitari (Art. 9)
+- HR manager: CV, contratti, valutazioni del personale
+
+## Formati supportati
+
+.docx, .pdf, .xlsx, .pptx, .txt, .md, .csv, .json, .xml, .html, .eml, .msg, .odt, .ods, .rtf (16 totali)
+
+## Prezzi
+
+- Free: 5 documenti/mese, modalità Solo Regex, formati .txt/.docx
+- Pro: 79€/anno (early bird, poi 129€/anno) — tutti i formati, AI contestuale, tutti i profili, batch processing
+- Pro Perpetua: 229€ una tantum, licenza a vita, aggiornamenti 12 mesi
+- Studio: 399€/anno, fino a 5 postazioni, CLI avanzata, audit trail
+
+## Link
+
+- Sito: https://giandemoncell-prog.github.io/anonimizzatore/
+- GitHub: https://github.com/giandemoncell-prog/anonimizzatore
+- Download: https://github.com/giandemoncell-prog/anonimizzatore/releases/latest
+- Contatto: giandemoncell@gmail.com
+
+## Sviluppatore
+
+Gianluca Demontis — https://gianlucademontis.xyz
