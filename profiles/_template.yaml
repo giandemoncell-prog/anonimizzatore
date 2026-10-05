@@ -43,6 +43,11 @@ entity_types:
 #                           maiuscole/minuscole). Utile per targhe, CAP, sigle.
 #   (?P<value>...)       -> gruppo nel pattern: viene sostituito solo il valore e
 #                           l'etichetta resta nel testo (es. "P.IVA [P.IVA_1]").
+#
+# keep_rules (facoltativo): pattern di testo da NON anonimizzare mai, oltre a quelli
+# già previsti dal programma (riferimenti normativi con la loro data, codici ICD).
+# keep_rules:
+#   - '\bProtocollo d\x27intesa del \d{1,2}/\d{1,2}/\d{4}'
 regex_rules:
   - name: "Email"
     pattern: '\b[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}\b'
