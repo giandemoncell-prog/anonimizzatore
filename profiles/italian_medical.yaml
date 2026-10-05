@@ -44,10 +44,27 @@ regex_rules:
     pattern: '\b[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}\b'
     placeholder: "[Email]"
   - name: "Indirizzi stradali"
-    pattern: '\b(?:Via|Viale|Corso|Piazza|Piazzale|Largo|Vicolo|Strada|Contrada|Loc(?:alit\xE0)?\.?)\s+[A-Za-z\xC0-\xFF][A-Za-z\xC0-\xFF .\-\x27]{1,40}?,?[ \t]+(?:n(?:\.|\xB0)?[ \t]*)?\d{1,4}[a-zA-Z]?\b'
+    pattern: '\b(?:Via|Viale|Corso|Piazza|Piazzale|Largo|Vicolo|Strada|Contrada|Loc(?:alit\xE0)?\.?)\s+[A-Za-z\xC0-\xFF][A-Za-z\xC0-\xFF .\-\x27\u2019]{1,40}?,?[ \t]+(?:n(?:\.|\xB0)?[ \t]*)?\d{1,4}[a-zA-Z]?\b'
     placeholder: "[Indirizzo]"
+  # Iniziali dopo l'etichetta della persona ("Alunno/a (iniziali): | P. M.")
+  - name: "Iniziali"
+    pattern: '(?:alunn[oa](?:/a)?|studente(?:ssa)?|student[ei]|bambin[oa]|paziente|assistit[oa]|dipendente|nome(?:\s+e\s+cognome)?|cognome(?:\s+e\s+nome)?|iniziali)(?:\s*\([^)\n]{0,20}\))?\s*[:|][ \t]*(?:\|[ \t]*)?(?P<value>(?-i:[A-Z])\.[ \t]?(?-i:[A-Z])\.(?:[ \t]?(?-i:[A-Z])\.)?)'
+    placeholder: "[Paziente]"
+
+  # Indirizzo senza numero civico, riconoscibile perche' seguito dal CAP o dal comune
+  # tra parentesi ("Via Pitz’e Serra, 09045 ..." / "Via Roma (Cagliari)")
+  - name: "Indirizzi senza civico"
+    pattern: '\b(?:Via|Viale|Corso|Piazza|Piazzale|Largo|Vicolo|Strada|Contrada)\s+(?-i:[A-Z\xC0-\xDD])[A-Za-z\xC0-\xFF .\-\x27\u2019]{1,40}?(?=,[ \t]*\d{5}\b|[ \t]*\([ \t]*(?-i:[A-Z]))'
+    placeholder: "[Indirizzo]"
+
+  # Comune scritto dopo il CAP ("09045 Quartu Sant’Elena"): il CAP lo sostituisce la regola successiva
+  - name: "Comune dopo il CAP"
+    pattern: '(?<![\d.,])\b\d{5}[ \t]+(?P<value>(?-i:[A-Z\xC0-\xDD])[A-Za-z\xC0-\xFF\x27\u2019\-]+(?:[ \t]+(?-i:[A-Z\xC0-\xDD])[A-Za-z\xC0-\xFF\x27\u2019\-]+){0,3})'
+    placeholder: "[Comune]"
+    ignore_case: false
+
   - name: "CAP"
-    pattern: '(?<=,\s)\d{5}\b|(?<=\s)\d{5}(?=\s+[A-Z\xC0-\xDD][A-Za-z\xC0-\xFF])'
+    pattern: '(?<=,\s)\d{5}\b|(?<=\s)\d{5}(?=\s+(?:[A-Z\xC0-\xDD][A-Za-z\xC0-\xFF]|\[))'
     placeholder: "[CAP]"
     ignore_case: false
   - name: "Date numeriche"

@@ -108,7 +108,7 @@ regex_rules:
 
   # Italian street address
   - name: "Indirizzo stradale IT"
-    pattern: '\b(?:Via|Viale|Corso|Piazza|Largo|Vicolo|Strada|Contrada|Loc(?:alit\xE0)?\.?)\s+[A-Z\xC0-\xFF a-z\xE0-\xFF][A-Za-z\xC0-\xFF\xE0-\xFF\s\.\-\x27]{1,40}?,?[ \t]+(?:n(?:\.|\xB0)?[ \t]*)?\d{1,4}[a-zA-Z]?\b'
+    pattern: '\b(?:Via|Viale|Corso|Piazza|Largo|Vicolo|Strada|Contrada|Loc(?:alit\xE0)?\.?)\s+[A-Z\xC0-\xFF a-z\xE0-\xFF][A-Za-z\xC0-\xFF\xE0-\xFF\s\.\-\x27\u2019]{1,40}?,?[ \t]+(?:n(?:\.|\xB0)?[ \t]*)?\d{1,4}[a-zA-Z]?\b'
     placeholder: "[ADDRESS]"
 
   # Italian license plate (2L-3D-2L, post-1994) — before ZIP patterns to avoid false matches
@@ -118,9 +118,32 @@ regex_rules:
     placeholder: "[PLATE]"
     ignore_case: false
 
+  # Nome della scuola tra virgolette dopo il tipo di istituto
+  # (ISTITUTO DI ISTRUZIONE SUPERIORE «G. BROTZU», I.C. "Don Milani", Liceo “Pacinotti”)
+  - name: "Nome scuola"
+    pattern: '(?-i:Istituto|ISTITUTO|Liceo|LICEO|Scuola|SCUOLA|Convitto|CONVITTO|I\.\s?C\.|I\.\s?I\.\s?S\.|I\.\s?T\.\s?[CI]\.(?:\s?S\.)?|I\.\s?P\.\s?S\.|C\.\s?P\.\s?I\.\s?A\.)[^«"“\n]{0,60}?[«"“](?P<value>(?-i:[A-Z\xC0-\xDD])[^»"”\n]{1,49})[»"”]'
+    placeholder: "[ORGANIZATION]"
+
+  # Iniziali dopo l'etichetta della persona ("Alunno/a (iniziali): | P. M.")
+  - name: "Iniziali"
+    pattern: '(?:alunn[oa](?:/a)?|studente(?:ssa)?|student[ei]|bambin[oa]|paziente|assistit[oa]|dipendente|nome(?:\s+e\s+cognome)?|cognome(?:\s+e\s+nome)?|iniziali)(?:\s*\([^)\n]{0,20}\))?\s*[:|][ \t]*(?:\|[ \t]*)?(?P<value>(?-i:[A-Z])\.[ \t]?(?-i:[A-Z])\.(?:[ \t]?(?-i:[A-Z])\.)?)'
+    placeholder: "[PERSON]"
+
+  # Indirizzo senza numero civico, riconoscibile perche' seguito dal CAP o dal comune
+  # tra parentesi ("Via Pitz’e Serra, 09045 ..." / "Via Roma (Cagliari)")
+  - name: "Indirizzi senza civico"
+    pattern: '\b(?:Via|Viale|Corso|Piazza|Piazzale|Largo|Vicolo|Strada|Contrada)\s+(?-i:[A-Z\xC0-\xDD])[A-Za-z\xC0-\xFF .\-\x27\u2019]{1,40}?(?=,[ \t]*\d{5}\b|[ \t]*\([ \t]*(?-i:[A-Z]))'
+    placeholder: "[ADDRESS]"
+
+  # Comune scritto dopo il CAP ("09045 Quartu Sant’Elena"): il CAP lo sostituisce la regola successiva
+  - name: "Comune dopo il CAP"
+    pattern: '(?<![\d.,])\b\d{5}[ \t]+(?P<value>(?-i:[A-Z\xC0-\xDD])[A-Za-z\xC0-\xFF\x27\u2019\-]+(?:[ \t]+(?-i:[A-Z\xC0-\xDD])[A-Za-z\xC0-\xFF\x27\u2019\-]+){0,3})'
+    placeholder: "[CITY]"
+    ignore_case: false
+
   # Italian CAP (ZIP): dopo una virgola o prima di un nome di comune (Roma / ROMA)
   - name: "CAP IT"
-    pattern: '(?<=,\s)\d{5}\b|(?<=\s)\d{5}(?=\s+[A-Z\xC0-\xDD][A-Za-z\xC0-\xFF])'
+    pattern: '(?<=,\s)\d{5}\b|(?<=\s)\d{5}(?=\s+(?:[A-Z\xC0-\xDD][A-Za-z\xC0-\xFF]|\[))'
     placeholder: "[ZIP]"
     ignore_case: false
 
