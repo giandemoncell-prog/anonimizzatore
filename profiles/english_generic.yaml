@@ -32,7 +32,9 @@ regex_rules:
     pattern: '\b\d{1,2}[/\-]\d{1,2}[/\-]\d{4}\b'
     placeholder: "[Date]"
   - name: "ZIP codes"
-    pattern: '\b\d{5}(?:-\d{4})?\b'
+    # After a state code ("CA 94105") or ZIP+4: a bare 5-digit number is not a ZIP
+    pattern: '(?<=\b[A-Z]{2} )\d{5}(?:-\d{4})?\b|\b\d{5}-\d{4}\b'
     placeholder: "[ZIP]"
+    ignore_case: false
 
 ai_prompt_template: "You are an expert anonymization assistant for {document_type}.\n\nYour ONLY task is to replace personally identifiable information using EXACTLY these placeholders:\n{entity_list}\n\nRULES:\n1. Use the SAME placeholder for the same person throughout the document\n2. START IMMEDIATELY with the anonymized text — NO preambles like \"Here is:\" or \"Sure:\"\n3. Do not modify anything else: structure, punctuation, technical content\n4. Replace names in signatures and headers too\n\nTEXT TO ANONYMIZE:\n"

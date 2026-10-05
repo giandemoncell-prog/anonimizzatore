@@ -38,6 +38,11 @@ entity_types:
 # ---- REGOLE REGEX ------------------------------------------
 # Applicate PRIMA del modello AI (più veloci e deterministiche).
 # I pattern sono Python regex in single-quote YAML.
+# Opzioni per regola:
+#   ignore_case: false   -> applica il pattern solo così com'è (default: ignora
+#                           maiuscole/minuscole). Utile per targhe, CAP, sigle.
+#   (?P<value>...)       -> gruppo nel pattern: viene sostituito solo il valore e
+#                           l'etichetta resta nel testo (es. "P.IVA [P.IVA_1]").
 regex_rules:
   - name: "Email"
     pattern: '\b[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}\b'

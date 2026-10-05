@@ -82,7 +82,8 @@ regex_rules:
 
   # Italian Partita IVA (IT + 11 digits OR bare 11 digits preceded by "P.IVA" / "PI" label)
   - name: "Partita IVA IT"
-    pattern: '\b(?:IT[\s\-]?)\d{11}\b|(?:P\.?\s*IVA|P\.?\s*I\.?|VAT)\s*:?\s*\d{11}\b'
+    # Il gruppo "value" limita la sostituzione al numero: l'etichetta "P.IVA" resta nel testo
+    pattern: '(?P<value>\b(?:IT[\s\-]?)\d{11}\b)|(?:P\.?\s*IVA|P\.?\s*I\.?|VAT)\s*:?\s*(?P<value2>\d{11})\b'
     placeholder: "[VAT-IT]"
 
   # SSN USA (XXX-XX-XXXX)
@@ -107,28 +108,34 @@ regex_rules:
 
   # Italian street address
   - name: "Indirizzo stradale IT"
-    pattern: '\b(?:Via|Viale|Corso|Piazza|Largo|Vicolo|Strada|Contrada|Loc(?:alit\xE0)?\.?)\s+[A-Z\xC0-\xFF a-z\xE0-\xFF][A-Za-z\xC0-\xFF\xE0-\xFF\s\.\-\x27]{1,40},?\s+\d{1,4}[a-zA-Z]?\b'
+    pattern: '\b(?:Via|Viale|Corso|Piazza|Largo|Vicolo|Strada|Contrada|Loc(?:alit\xE0)?\.?)\s+[A-Z\xC0-\xFF a-z\xE0-\xFF][A-Za-z\xC0-\xFF\xE0-\xFF\s\.\-\x27]{1,40}?,?[ \t]+(?:n(?:\.|\xB0)?[ \t]*)?\d{1,4}[a-zA-Z]?\b'
     placeholder: "[ADDRESS]"
 
   # Italian license plate (2L-3D-2L, post-1994) — before ZIP patterns to avoid false matches
+  # ignore_case: false -> solo maiuscole, altrimenti "al 100 km" diventa una targa
   - name: "Targa IT"
     pattern: '\b[A-Z]{2}\s?\d{3}\s?[A-Z]{2}\b'
     placeholder: "[PLATE]"
+    ignore_case: false
 
-  # Italian CAP (ZIP)
+  # Italian CAP (ZIP): dopo una virgola o prima di un nome di comune (Roma / ROMA)
   - name: "CAP IT"
-    pattern: '(?<=,\s)\d{5}\b|(?<=\s)\d{5}(?=\s+[A-Z][a-z\xE0-\xFF])'
+    pattern: '(?<=,\s)\d{5}\b|(?<=\s)\d{5}(?=\s+[A-Z\xC0-\xDD][A-Za-z\xC0-\xFF])'
     placeholder: "[ZIP]"
+    ignore_case: false
 
   # UK postcode (requires space: "SW1A 2AA") — stricter to avoid matching plates
   - name: "UK Postcode"
     pattern: '\b[A-Z]{1,2}\d[A-Z\d]?\s+\d[A-Z]{2}\b'
     placeholder: "[ZIP]"
+    ignore_case: false
 
-  # US/CA ZIP code (5 digits, optionally +4)
+  # US/CA ZIP code: dopo la sigla dello stato ("CA 94105") o nel formato ZIP+4.
+  # Un numero di 5 cifre da solo ("35000 persone") NON e' un CAP.
   - name: "ZIP USA/CA"
-    pattern: '\b\d{5}(?:\-\d{4})?\b'
+    pattern: '(?<=\b[A-Z]{2} )\d{5}(?:\-\d{4})?\b|\b\d{5}\-\d{4}\b'
     placeholder: "[ZIP]"
+    ignore_case: false
 
   # Dates DD/MM/YYYY, MM/DD/YYYY, DD-MM-YYYY, DD.MM.YYYY
   - name: "Data gg/mm/aaaa"
@@ -159,5 +166,33 @@ regex_rules:
   - name: "Coordinate GPS"
     pattern: '\b[-+]?\d{1,3}\.\d{4,8},\s*[-+]?\d{1,3}\.\d{4,8}\b'
     placeholder: "[COORDS]"
+
+  # ID document number after its label (IT/EN), also lowercase ("ca12345ab")
+  - name: "Documento d'identita'"
+    pattern: '(?:carta\s+d(?:i\s+|\x27\s*)identit[\xE0a]\x27?|C\.\s?I\.|C\.I\.E\.|documento(?:\s+di\s+riconoscimento)?|passaporto|patente(?:\s+di\s+guida)?|passport|driver\x27?s?\s+licen[cs]e|ID\s+card)(?:\s*(?:n\.?|n\xB0|nr\.?|no\.?|numero|number))?\s*:?\s*(?P<value>(?=[A-Z0-9]*\d)[A-Z0-9]{7,10})\b'
+    placeholder: "[ID-DOC]"
+
+  # Italian electronic ID card without label (CA12345AB): uppercase only
+  - name: "CIE"
+    pattern: '\b[A-Z]{2}\d{5}[A-Z]{2}\b'
+    placeholder: "[ID-DOC]"
+    ignore_case: false
+
+  # Case / application / report numbers after their label (INPS, ASL, public offices)
+  - name: "Numero pratica/verbale"
+    pattern: '(?:n\.?\s*domanda|numero\s+domanda|codice\s+verbale|cod\.?\s*verbale|n\.?\s*verbale|n\.?\s*pratica|numero\s+pratica|codice\s+pratica|n\.?\s*protocollo|prot\.\s*(?:n\.?)?|case\s+(?:no\.?|number)|application\s+(?:no\.?|number))\s*:?\s*(?P<value>(?=[A-Za-z0-9/\-]*\d)[A-Za-z0-9/\-]{5,})'
+    placeholder: "[CASE-ID]"
+
+  # Codici alfanumerici maiuscoli con almeno 8 cifre (protocolli, codici a barre di
+  # pratiche, es. A1234567C123456789). Il codice fiscale ne ha 7: non viene toccato.
+  - name: "Codice alfanumerico"
+    pattern: '\b(?=[A-Z0-9]*[A-Z])(?=(?:[A-Z]*\d){8})[A-Z0-9]{10,25}\b'
+    placeholder: "[CASE-ID]"
+    ignore_case: false
+
+  # Long numeric codes (10+ digits) still left: almost always identifiers
+  - name: "Codice numerico lungo"
+    pattern: '\b\d{10,}\b'
+    placeholder: "[CASE-ID]"
 
 ai_prompt_template: "You are a professional anonymization assistant. Your ONLY task is to identify and replace all personally identifiable information (PII) in the document below.\n\nUSE EXACTLY THESE PLACEHOLDERS:\n{entity_list}\n\nADDITIONAL REGEX-REPLACED PLACEHOLDERS ALREADY IN THE TEXT:\n[EMAIL], [URL], [IP], [MAC], [IBAN], [CARD], [CF], [VAT-IT], [SSN], [NHS], [PHONE], [ADDRESS], [ZIP], [PLATE], [DATE], [PROT], [COORDS]\n\nFUNDAMENTAL RULES:\n1. Use the SAME placeholder consistently for the SAME person or entity throughout the document\n2. START IMMEDIATELY with the anonymized text — ZERO preamble (no \"Here is...\", \"Sure...\", \"Certainly...\")\n3. Do NOT change anything else: keep structure, punctuation, numbers, facts, all non-PII content\n4. When in doubt, anonymize — safer to over-anonymize than under-anonymize\n5. Match the LANGUAGE of the source document in your output\n6. Replace names in: running text, headers, signatures, footers, metadata fields, lists\n7. Replace partial names and nicknames if they identify a specific individual\n\nDOCUMENT TO ANONYMIZE:\n"

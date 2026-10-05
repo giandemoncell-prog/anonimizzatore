@@ -11,6 +11,8 @@ ai:
   temperature: 0.05
   max_tokens: 8192
   context_window: 16384         # usato solo da Ollama
+  think: false                  # true per lasciar "ragionare" i modelli thinking (qwen3, deepseek-r1): molto più lento
+  ocr_model: null               # modello con visione per i PDF scansionati (es. qwen2.5vl); null = usa "model"
 
 output:
   format: preserve              # preserve | txt | docx

@@ -13,6 +13,9 @@ openpyxl>=3.1.0
 # Profili YAML e settings
 PyYAML>=6.0
 
+# Immagini delle pagine dei PDF scansionati (OCR con modello AI con visione)
+Pillow>=10.0.0
+
 # Lettura .odt / .ods (OpenDocument)
 odfpy>=1.4.2
 
