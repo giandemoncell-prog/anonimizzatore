@@ -171,7 +171,7 @@ bash start_chromebook.sh  # Linux / Chromebook
 | **Pro Perpetua** | €229 una tantum | Come Pro, aggiornamenti inclusi per 12 mesi |
 | **Studio** | €399/anno | Multi-postazione (fino a 5), CLI avanzata, audit trail |
 
-**[Acquista una licenza](mailto:giandemoncell@gmail.com?subject=Licenza%20Anonimizzatore)** — scrivi per ricevere il link di acquisto sicuro con fattura IVA italiana.
+**[Acquista una licenza](mailto:giandemoncell@gmail.com?subject=Licenza%20Anonimizzatore)** — scrivi per ricevere il link di acquisto sicuro. La licenza d'uso è concessa direttamente dall'autore del software, con ricevuta per diritti d'autore (senza IVA, art. 3 c. 4 lett. a D.P.R. 633/1972).
 
 Hai domande sul piano giusto per te? Scrivi a: **giandemoncell@gmail.com**
 
